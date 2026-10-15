@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#090d16">
-<title>NOVA//REACTOR — Slot Cabinet Visual Prototype</title>
+<title>SEAT//SHUFFLE — 席替え・座席配置</title>
 <style>
 :root{
   color-scheme:dark;
@@ -95,8 +95,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .machine.rotating .reel-bezel{box-shadow:inset 0 0 0 2px #f7ffff,inset 0 0 28px #5beeff4a,0 0 15px #40eaff4d}
 .machine.rotating .cabinet-shell:before,.machine.rotating .cabinet-shell:after{opacity:1;filter:brightness(1.7)}
 @keyframes globalSpinSweep{from{transform:translateY(0)}to{transform:translateY(520%)}}
-@keyframes railSurge{from{opacity:.6;filter:brightness(1)}to{opacity:1;filter:brightness(2.2)}}
-@keyframes opticSurge{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.9);transform:scale(1.08)}}
+@keyframes railSurge{from{opacity:.62}to{opacity:1}}
+@keyframes opticSurge{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
 .reel-side-led{position:absolute;z-index:4;top:34px;bottom:25px;width:3px;border-radius:8px;background:linear-gradient(transparent,var(--cyan),#fff,var(--violet),transparent);box-shadow:0 0 calc(12px * var(--glow)) var(--cyan);opacity:.78}.reel-side-led.left{left:4px}.reel-side-led.right{right:4px}
 .win-line{position:absolute;z-index:4;left:0;right:0;top:50%;height:1px;background:#ff5eea;box-shadow:0 0 5px #ff5eea,0 0 12px #ff5eea;opacity:0;pointer-events:none}.machine.show-line .win-line{opacity:.85;animation:lineSweep 1.8s ease-in-out infinite}
 @keyframes lineSweep{0%,100%{transform:translateY(-45px);opacity:.15}50%{transform:translateY(35px);opacity:1}}
@@ -138,13 +138,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .range-wrap{display:grid;grid-template-columns:1fr 41px;gap:12px;align-items:center}.range-wrap input{width:100%;accent-color:#5beaff;cursor:pointer}.range-limits{display:flex;justify-content:space-between;margin-top:5px;color:#71879b;font:700 8px/1 ui-monospace,monospace}
 .segmented{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.seg{border:1px solid #41566a;border-radius:5px;padding:9px 5px;background:linear-gradient(#202d3b,#111925);color:#9eb4c7;font-size:10px;font-weight:800;transition:.15s}.seg[aria-pressed="true"]{color:#e9ffff;border-color:#66efff;background:linear-gradient(#22516a,#142839);box-shadow:inset 0 0 0 1px #7df7ff25,0 0 12px #38cfff20}
 .primary-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 10px}.action{position:relative;border:1px solid #648092;border-radius:6px;padding:12px 8px;background:linear-gradient(180deg,#344a5c,#152432 60%,#0c121b);color:#eafaff;font-size:11px;font-weight:900;letter-spacing:.06em;box-shadow:inset 0 1px #fff2,0 3px 0 #05080e;transition:transform .12s,filter .12s}.action:hover{filter:brightness(1.2)}.action:active{transform:translateY(2px);box-shadow:inset 0 1px #fff2,0 1px 0 #05080e}.action.primary{border-color:#3bbbd6;background:linear-gradient(180deg,#1685a0,#0d3d55 58%,#092130);box-shadow:inset 0 1px #d5ffff55,0 3px 0 #04080c,0 0 14px #27cfff25}.action.hot{border-color:#b84b62;background:linear-gradient(180deg,#8c293e,#431624 68%,#1b0a10)}
-.action-wide{width:100%;margin-top:1px}.mini-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.mini-action{border:1px solid #354b5d;background:#101a26;color:#8fa8ba;border-radius:5px;padding:8px 5px;font-size:9px;font-weight:800}.mini-action[aria-pressed="true"]{color:#cefcff;border-color:#4f9fb0;background:#173341}
+.action-wide{width:100%;margin-top:1px}.auto-action{grid-column:1/-1;border-color:#6b58b5;background:linear-gradient(180deg,#6046a0,#282046 65%,#110f20);box-shadow:inset 0 1px #fff3,0 3px 0 #05080e,0 0 13px #b56bff22}.auto-action[aria-pressed="true"]{border-color:#ffb3c9;background:linear-gradient(180deg,#9f2857,#4c1437 68%,#210a1b);box-shadow:inset 0 1px #fff4,0 3px 0 #05080e,0 0 16px #ff3d9a44}.mini-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.mini-action{border:1px solid #354b5d;background:#101a26;color:#8fa8ba;border-radius:5px;padding:8px 5px;font-size:9px;font-weight:800}.mini-action[aria-pressed="true"]{color:#cefcff;border-color:#4f9fb0;background:#173341}
 .console-readout{margin-top:16px;padding:12px;border:1px solid #324658;border-radius:6px;background:#080f18;box-shadow:inset 0 0 16px #0007}.readout-head{display:flex;align-items:center;justify-content:space-between;color:#7892a9;font:800 8px/1.2 ui-monospace,monospace;letter-spacing:.15em;margin-bottom:7px}.readout-lamp{color:#9fff8c}.readout-main{font:800 11px/1.5 ui-monospace,monospace;color:#b8e9ff;min-height:34px}.readout-bottom{display:flex;justify-content:space-between;gap:5px;margin-top:8px;padding-top:7px;border-top:1px solid #243545;color:#668096;font:700 8px/1 ui-monospace,monospace}
 .spec-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px}.spec{padding:8px 5px;border:1px solid #2a3e51;border-radius:5px;text-align:center;background:#0d1621}.spec b{display:block;font:900 12px/1.2 ui-monospace,monospace;color:#e6fbff}.spec span{display:block;margin-top:4px;font:700 7px/1.1 ui-monospace,monospace;color:#718ca2;letter-spacing:.08em}
 .footer{max-width:1600px;margin:20px auto 0;padding-top:12px;border-top:1px solid #263546;display:flex;justify-content:space-between;gap:12px;color:#63788c;font:700 8px/1.5 ui-monospace,monospace;letter-spacing:.08em}.footer span:last-child{text-align:right}
 .toast{position:fixed;z-index:99;left:50%;bottom:22px;transform:translate(-50%,20px);padding:11px 16px;border:1px solid #5cdcf4;border-radius:6px;background:#0d202d;color:#e9fbff;font-size:11px;font-weight:800;box-shadow:0 6px 35px #0009,0 0 18px #37dfff22;opacity:0;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
 
-@media(max-width:850px){.layout{grid-template-columns:1fr;max-width:100%}.machine-stage{order:0;justify-content:flex-start;overflow-x:auto}.side-console{order:1}.topbar{max-width:100%}.side-console{padding:16px}.console-intro{display:grid;grid-template-columns:1fr auto;column-gap:16px}.console-kicker,.console-title,.console-desc{grid-column:1}.console-desc{margin-bottom:0}.console-intro:after{content:"VISUAL DEMO";grid-column:2;grid-row:1/4;align-self:center;writing-mode:vertical-rl;color:#4c7187;font:900 9px/1 ui-monospace,monospace;letter-spacing:.2em}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.settings-grid .control-group{min-width:0}.primary-actions{margin-top:8px}}
+@media(max-width:850px){.layout{grid-template-columns:1fr;max-width:100%}.machine-stage{order:0;justify-content:flex-start;overflow-x:auto}.side-console{order:1}.topbar{max-width:100%}.side-console{padding:16px}.console-intro{display:grid;grid-template-columns:1fr auto;column-gap:16px}.console-kicker,.console-title,.console-desc{grid-column:1}.console-desc{margin-bottom:0}.console-intro:after{content:"席替え";grid-column:2;grid-row:1/4;align-self:center;writing-mode:vertical-rl;color:#4c7187;font:900 9px/1 ui-monospace,monospace;letter-spacing:.2em}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.settings-grid .control-group{min-width:0}.primary-actions{margin-top:8px}}
 @media(max-width:480px){.page{padding:12px 7px 24px}.topbar{margin-bottom:14px;padding:0 5px}.brand-mark{width:30px;height:30px}.brand-name{font-size:11px}.brand-sub{font-size:7px}.top-status{font-size:8px}.layout{gap:12px}.machine{width:var(--cabinet-w);max-width:none}.cabinet-shell{padding:7px 7px 9px;border-radius:14px 14px 9px 9px}.top-cap{margin:0 5px 7px;min-height:80px;height:83px;padding:6px}.cap-title{font-size:clamp(20px,6.5vw,31px)}.cap-eyebrow{font-size:7px;letter-spacing:.28em;margin-top:6px}.cap-tagline{font-size:7px;letter-spacing:.12em}.optic-row{margin:0 5px 6px;height:20px}.optic{width:15px;height:15px}.optic-label{font-size:6px}.reel-bezel{padding:8px 6px}.reel-head{font-size:6px;letter-spacing:.07em;margin-bottom:6px}.reel-window{padding:3px;gap:2px;height:clamp(170px,calc(var(--rows) * 34px),360px)}.symbol-glyph{font-size:clamp(12px,4.4vw,22px)}.symbol-label{font-size:clamp(4px,1.3vw,6px);letter-spacing:0}.lane-index{font-size:6px;top:2px}.control-deck{padding:8px 7px;margin:8px 1px}.dial{width:clamp(18px,5.7vw,28px);height:clamp(18px,5.7vw,28px)}.deck-label{font-size:6px}.art-panel{height:clamp(116px,34vw,160px)}.art-copy strong{font-size:clamp(16px,5vw,25px)}.lower-grille{height:34px}.side-console{padding:13px}.console-title{font-size:19px}.console-desc{font-size:10px}.footer{font-size:7px;margin-top:14px}.footer span:last-child{max-width:48%}}
 
 .roster-panel{margin:2px 0 12px;padding:13px;border:1px solid #34485a;border-radius:7px;background:linear-gradient(145deg,#111e2b,#080e17 74%,#101a28);box-shadow:inset 0 0 0 1px #c5f5ff0b}
@@ -158,7 +158,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
-/* NOVA//REACTOR refinement: larger information density, high-speed continuous reel travel. */
+/* Seat-shuffle layout refinement: dense information, high-speed seat assignment animation. */
 :root{--spin-duration:.22s;--assigned-font:14px;--seat-code-font:7px}
 .side-console{padding:14px}
 .console-title{font-size:23px;line-height:1.02;letter-spacing:.025em;margin-bottom:5px}
@@ -203,7 +203,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .reel-lane.spinning .symbol-glyph{transform:scaleY(1.62) skewY(-8deg) scaleX(.94);filter:blur(.7px);text-shadow:0 -8px 5px #b7ffffb8,0 5px 4px #34dfffce,0 13px 12px #34dfff70,0 22px 19px #34dfff2b}
 .reel-lane.spinning .symbol-label{filter:blur(1px);opacity:.45}
 @keyframes reelStripTravel{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-50%,0)}}
-.reel-lane.spinning:after{inset:-14% -10%;background:repeating-linear-gradient(180deg,transparent 0 4px,#ecffff24 5px 6px,transparent 7px 11px),linear-gradient(180deg,transparent 0%,#bfffff20 13%,#fff9 38%,#58eaff78 50%,#fff8 61%,#7a5bff30 76%,transparent 100%);filter:blur(1.2px);animation:vectorSweep .105s linear infinite}
+.reel-lane.spinning:after{inset:-14% -10%;background:repeating-linear-gradient(180deg,transparent 0 4px,#ecffff24 5px 6px,transparent 7px 11px),linear-gradient(180deg,transparent 0%,#bfffff20 13%,#fff9 38%,#58eaff78 50%,#fff8 61%,#7a5bff30 76%,transparent 100%);filter:none;animation:vectorSweep .105s linear infinite}
 .reel-lane.spinning:before{opacity:.82;background:linear-gradient(90deg,#000a,transparent 8%,#fff6 45%,transparent 78%,#000a),linear-gradient(180deg,transparent 12%,#d6ffff18 36%,#fff8 50%,#31dfff40 56%,transparent 88%)}
 .reel-lane.braking .reel-strip{filter:blur(.25px)}
 .reel-lane.braking.spinning:after{opacity:.42;filter:blur(2px)}
@@ -232,8 +232,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 /* High-energy refinements: local 30 Hz light pulses, readable numeric reels,
    directional multi-sample trails, longer impact typography, and 4:3 cells. */
 @keyframes opticalFlash30{
-  0%,49.9%{opacity:.3;filter:brightness(1.15) saturate(1.1)}
-  50%,100%{opacity:1;filter:brightness(3.25) saturate(1.7)}
+  0%,49.9%{opacity:.28}
+  50%,100%{opacity:1}
 }
 .machine.rotating .cap-rail,
 .machine.impact-burst .cap-rail{
@@ -285,10 +285,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   clip-path:inset(8% 0 0 0);
 }
 .symbol.rolling-number .symbol-label{opacity:0;margin:0;height:0;overflow:hidden}
-.reel-lane.spinning .symbol.rolling-number{filter:blur(.9px) saturate(1.55) contrast(1.18)}
+.reel-lane.spinning .symbol.rolling-number{filter:none}
 .reel-lane.spinning .symbol.rolling-number .symbol-glyph{
   transform:translateY(-2px) scaleY(1.24) skewY(-7deg);
-  filter:blur(.8px) drop-shadow(0 0 7px #dfffff);
+  filter:none;
   text-shadow:0 -38px 2px #5df4ff14,0 -29px 2px #5df4ff35,0 -21px 3px #5df4ff70,0 -14px 2px #42dfffbc,0 -7px 1px #dfffff,0 2px 0 #fff,0 10px 4px #20c9ffbd,0 18px 7px #389effa0,0 28px 12px #ee4dff70,0 39px 19px #ee4dff34;
 }
 /* A stop produces several directional echoes rather than a uniform blur. */
@@ -372,27 +372,65 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 }
 .reel-lane.spinning .symbol.rolling-number .symbol-glyph::before{
   opacity:.66;transform:translateY(-38%) scaleY(2.05) scaleX(.98);
-  filter:blur(1.1px);text-shadow:0 -8px 3px #e3ffff,0 -18px 7px #36cfffdd,0 -31px 15px #36cfff88;
+  filter:none;text-shadow:0 -8px 3px #e3ffff,0 -18px 7px #36cfffdd,0 -31px 15px #36cfff88;
 }
 .reel-lane.spinning .symbol.rolling-number .symbol-glyph::after{
   opacity:.48;transform:translateY(39%) scaleY(2.0) scaleX(1.02);
-  filter:blur(1.4px);text-shadow:0 8px 3px #ffe4ff,0 18px 8px #e83fffbb,0 32px 15px #44eaff66;
+  filter:none;text-shadow:0 8px 3px #ffe4ff,0 18px 8px #e83fffbb,0 32px 15px #44eaff66;
 }
 @keyframes cabinetStopImpact{
-  0%{transform:rotateY(-1deg) translate3d(0,0,0)}
-  7%{transform:rotateY(-1deg) translate3d(-7px,1px,0) rotateZ(-.32deg)}
-  15%{transform:rotateY(-1deg) translate3d(8px,-1px,0) rotateZ(.38deg)}
-  24%{transform:rotateY(-1deg) translate3d(-5px,2px,0) rotateZ(-.24deg)}
-  34%{transform:rotateY(-1deg) translate3d(4px,-1px,0) rotateZ(.2deg)}
-  46%{transform:rotateY(-1deg) translate3d(-2.5px,1px,0) rotateZ(-.12deg)}
-  60%{transform:rotateY(-1deg) translate3d(1.5px,0,0)}
-  76%{transform:rotateY(-1deg) translate3d(-.7px,0,0)}
-  100%{transform:rotateY(-1deg) translate3d(0,0,0)}
+  0.0000%{transform:rotateY(-1deg) translate3d(0.000px,2.200px,0) rotateZ(0.0000deg)}
+  2.0833%{transform:rotateY(-1deg) translate3d(6.932px,0.000px,0) rotateZ(0.3274deg)}
+  4.1667%{transform:rotateY(-1deg) translate3d(0.000px,-2.038px,0) rotateZ(0.0000deg)}
+  6.2500%{transform:rotateY(-1deg) translate3d(-6.410px,-0.000px,0) rotateZ(-0.3027deg)}
+  8.3333%{transform:rotateY(-1deg) translate3d(-0.000px,1.881px,0) rotateZ(-0.0000deg)}
+  10.4167%{transform:rotateY(-1deg) translate3d(5.907px,0.000px,0) rotateZ(0.2789deg)}
+  12.5000%{transform:rotateY(-1deg) translate3d(0.000px,-1.730px,0) rotateZ(0.0000deg)}
+  14.5833%{transform:rotateY(-1deg) translate3d(-5.421px,-0.000px,0) rotateZ(-0.2560deg)}
+  16.6667%{transform:rotateY(-1deg) translate3d(-0.000px,1.585px,0) rotateZ(-0.0000deg)}
+  18.7500%{transform:rotateY(-1deg) translate3d(4.955px,0.000px,0) rotateZ(0.2340deg)}
+  20.8333%{transform:rotateY(-1deg) translate3d(0.000px,-1.445px,0) rotateZ(0.0000deg)}
+  22.9167%{transform:rotateY(-1deg) translate3d(-4.507px,-0.000px,0) rotateZ(-0.2128deg)}
+  25.0000%{transform:rotateY(-1deg) translate3d(-0.000px,1.311px,0) rotateZ(-0.0000deg)}
+  27.0833%{transform:rotateY(-1deg) translate3d(4.078px,-0.000px,0) rotateZ(0.1926deg)}
+  29.1667%{transform:rotateY(-1deg) translate3d(0.000px,-1.183px,0) rotateZ(0.0000deg)}
+  31.2500%{transform:rotateY(-1deg) translate3d(-3.668px,-0.000px,0) rotateZ(-0.1732deg)}
+  33.3333%{transform:rotateY(-1deg) translate3d(-0.000px,1.060px,0) rotateZ(-0.0000deg)}
+  35.4167%{transform:rotateY(-1deg) translate3d(3.278px,-0.000px,0) rotateZ(0.1548deg)}
+  37.5000%{transform:rotateY(-1deg) translate3d(0.000px,-0.944px,0) rotateZ(0.0000deg)}
+  39.5833%{transform:rotateY(-1deg) translate3d(-2.907px,-0.000px,0) rotateZ(-0.1373deg)}
+  41.6667%{transform:rotateY(-1deg) translate3d(-0.000px,0.834px,0) rotateZ(-0.0000deg)}
+  43.7500%{transform:rotateY(-1deg) translate3d(2.556px,-0.000px,0) rotateZ(0.1207deg)}
+  45.8333%{transform:rotateY(-1deg) translate3d(0.000px,-0.730px,0) rotateZ(0.0000deg)}
+  47.9167%{transform:rotateY(-1deg) translate3d(-2.225px,-0.000px,0) rotateZ(-0.1051deg)}
+  50.0000%{transform:rotateY(-1deg) translate3d(-0.000px,0.632px,0) rotateZ(-0.0000deg)}
+  52.0833%{transform:rotateY(-1deg) translate3d(1.915px,-0.000px,0) rotateZ(0.0904deg)}
+  54.1667%{transform:rotateY(-1deg) translate3d(-0.000px,-0.540px,0) rotateZ(-0.0000deg)}
+  56.2500%{transform:rotateY(-1deg) translate3d(-1.626px,-0.000px,0) rotateZ(-0.0768deg)}
+  58.3333%{transform:rotateY(-1deg) translate3d(-0.000px,0.455px,0) rotateZ(-0.0000deg)}
+  60.4167%{transform:rotateY(-1deg) translate3d(1.358px,-0.000px,0) rotateZ(0.0641deg)}
+  62.5000%{transform:rotateY(-1deg) translate3d(0.000px,-0.376px,0) rotateZ(0.0000deg)}
+  64.5833%{transform:rotateY(-1deg) translate3d(-1.111px,-0.000px,0) rotateZ(-0.0525deg)}
+  66.6667%{transform:rotateY(-1deg) translate3d(-0.000px,0.305px,0) rotateZ(-0.0000deg)}
+  68.7500%{transform:rotateY(-1deg) translate3d(0.887px,0.000px,0) rotateZ(0.0419deg)}
+  70.8333%{transform:rotateY(-1deg) translate3d(-0.000px,-0.239px,0) rotateZ(-0.0000deg)}
+  72.9167%{transform:rotateY(-1deg) translate3d(-0.686px,-0.000px,0) rotateZ(-0.0324deg)}
+  75.0000%{transform:rotateY(-1deg) translate3d(-0.000px,0.181px,0) rotateZ(-0.0000deg)}
+  77.0833%{transform:rotateY(-1deg) translate3d(0.508px,0.000px,0) rotateZ(0.0240deg)}
+  79.1667%{transform:rotateY(-1deg) translate3d(0.000px,-0.131px,0) rotateZ(0.0000deg)}
+  81.2500%{transform:rotateY(-1deg) translate3d(-0.354px,-0.000px,0) rotateZ(-0.0167deg)}
+  83.3333%{transform:rotateY(-1deg) translate3d(-0.000px,0.087px,0) rotateZ(-0.0000deg)}
+  85.4167%{transform:rotateY(-1deg) translate3d(0.225px,0.000px,0) rotateZ(0.0106deg)}
+  87.5000%{transform:rotateY(-1deg) translate3d(-0.000px,-0.052px,0) rotateZ(-0.0000deg)}
+  89.5833%{transform:rotateY(-1deg) translate3d(-0.123px,-0.000px,0) rotateZ(-0.0058deg)}
+  91.6667%{transform:rotateY(-1deg) translate3d(-0.000px,0.025px,0) rotateZ(-0.0000deg)}
+  93.7500%{transform:rotateY(-1deg) translate3d(0.049px,0.000px,0) rotateZ(0.0023deg)}
+  95.8333%{transform:rotateY(-1deg) translate3d(0.000px,-0.007px,0) rotateZ(0.0000deg)}
+  97.9167%{transform:rotateY(-1deg) translate3d(-0.007px,0.000px,0) rotateZ(-0.0003deg)}
+  100.0000%{transform:rotateY(-1deg) translate3d(-0.000px,0.000px,0) rotateZ(-0.0000deg)}
 }
-.machine.stop-impact{animation:cabinetStopImpact 270ms steps(2,end) both;}
-.machine.stop-impact .cabinet-shell{
-  box-shadow:inset 0 0 0 2px #fff,inset 0 0 24px #8cf8ff55,0 0 18px #58eaff66;
-}
+.machine.stop-impact{animation:cabinetStopImpact 800ms linear both;will-change:transform;}
+.machine.stop-impact .cabinet-shell{box-shadow:inset 0 0 0 2px #fff,inset 0 0 24px #8cf8ff55,0 0 18px #58eaff66;}
 
 </style>
 </head>
@@ -400,36 +438,36 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <div class="ambient-grid" aria-hidden="true"></div>
 <div class="page">
   <header class="topbar">
-    <div class="brand-lockup"><div class="brand-mark" aria-hidden="true"></div><div><div class="brand-name">NOVA<span style="color:var(--cyan)">//</span>REACTOR</div><div class="brand-sub">CABINET VISUAL PROTOTYPE / NR-07</div></div></div>
-    <div class="top-status"><span class="status-led"></span><span>OPTICAL SYSTEM<br>VISUAL MODE / 07</span></div>
+    <div class="brand-lockup"><div class="brand-mark" aria-hidden="true"></div><div><div class="brand-name">SEAT<span style="color:var(--cyan)">//</span>SHUFFLE</div><div class="brand-sub">座席配置・シャッフル</div></div></div>
+    <div class="top-status"><span class="status-led"></span><span>席替えシステム<br>座席配置モード / 01</span></div>
   </header>
   <main class="layout">
-    <section class="machine-stage" aria-label="スロット筐体のプレビュー">
+    <section class="machine-stage" aria-label="席替え演出と座席配置">
       <div class="machine" id="machine">
         <div class="cabinet-shell">
           <header class="top-cap">
-            <div class="cap-rail"></div><div class="cap-eyebrow">N O V A &nbsp; / &nbsp; REACTION DRIVE</div>
-            <h1 class="cap-title">NOVA <span>REACTOR</span></h1>
-            <div class="cap-tagline">IGNITE THE NEXT PHASE — OPTICAL SYSTEM 07</div>
+            <div class="cap-rail"></div><div class="cap-eyebrow">座 席 配 置 &nbsp; / &nbsp; 抽 選 演 出</div>
+            <h1 class="cap-title">SEAT <span>SHUFFLE</span></h1>
+            <div class="cap-tagline">次の席を決める — 座席配置システム</div>
             <div class="cap-corners"><i class="microbar"></i><i class="microbar"></i></div>
             <div class="bolt-row cap-bolts"><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i></div>
           </header>
           <div class="optic-row">
-            <div class="optic-cluster"><i class="optic"></i><i class="optic purple"></i><i class="optic"></i><span class="optic-label">ENERGY / 88.4</span></div>
-            <span class="optic-label">PHASE 07 — ACTIVE</span>
-            <div class="optic-cluster"><span class="optic-label">CORE</span><i class="optic red"></i><i class="optic"></i><i class="optic purple"></i></div>
+            <div class="optic-cluster"><i class="optic"></i><i class="optic purple"></i><i class="optic"></i><span class="optic-label">参加者 / <b id="opticRosterCount">28</b></span></div>
+            <span class="optic-label">配置演出 — 待機中</span>
+            <div class="optic-cluster"><span class="optic-label">空席</span><i class="optic red"></i><i class="optic"></i><i class="optic purple"></i></div>
           </div>
-          <section class="reel-bezel" aria-label="リール表示部">
-            <div class="reel-head"><span>REACTOR ARRAY / <b id="laneCaption">06 LANES</b></span><span class="live" id="reelState">SYSTEM READY</span></div>
+          <section class="reel-bezel" aria-label="座席配置表示">
+            <div class="reel-head"><span>座席配置 / <b id="laneCaption">全6レーン</b></span><span class="live" id="reelState">準備完了</span></div>
             <div class="reel-window" id="reelWindow"><div class="reel-side-led left"></div><div class="reel-side-led right"></div><div class="win-line"></div><div class="reel-sweep"></div></div>
-            <div class="under-display"><span>NR—07 / OPTIC ENGINE</span><span class="ticker"><span id="tickerText">LIGHT SEQUENCE STANDBY • REACTIVE ARRAY ONLINE • NOVA SYSTEMS • </span></span><span id="rowCaption">06 × 05</span></div>
+            <div class="under-display"><span>座席番号 / 配置演出</span><span class="ticker"><span id="tickerText">席替え準備中 • 参加者の重複なし • 絶対空席を保持 • 座席を順番に確定 • </span></span><span id="rowCaption">6 × 5</span></div>
           </section>
           <div class="control-deck" aria-label="筐体操作部">
-            <div class="deck-label">INPUT<br>MODE / A</div>
+            <div class="deck-label">レーン別<br>停止操作</div>
             <div class="deck-control" id="dialControls" aria-label="レーンごとの停止ボタン"></div>
-            <div class="deck-label">REACTOR<br>CONTROL</div>
+            <div class="deck-label">座席配置<br>操作部</div>
           </div>
-          <div class="deck-foot"><span>OPTICAL FEEDBACK / ON</span><span>CAUTION: HIGH LUMINANCE</span><span>NR-07</span></div>
+          <div class="deck-foot"><span>配置演出：入</span><span>空席位置を固定</span><span>座席表</span></div>
           <section class="art-panel" aria-label="下部グラフィックパネル">
             <svg class="art-svg" viewBox="0 0 620 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
               <defs>
@@ -452,36 +490,36 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
               <g fill="url(#bladeA)" stroke="#d8ffff" stroke-width="1"><path d="M28 103L78 81L64 127Z"/><path d="M592 101L542 78L555 124Z"/><path d="M170 22L195 35L164 48Z"/><path d="M450 22L424 35L456 48Z"/></g>
               <g fill="#fff" opacity=".85"><circle cx="83" cy="38" r="2"/><circle cx="111" cy="147" r="1.5"/><circle cx="524" cy="35" r="2"/><circle cx="497" cy="149" r="1.5"/><circle cx="221" cy="54" r="1.7"/><circle cx="400" cy="56" r="1.7"/></g>
             </svg>
-            <div class="art-sweep"></div><div class="art-copy"><strong>Ignite the <span style="color:#9bfaff">unknown</span></strong><small>RESONANCE DRIVE / REACTOR IGNITION</small></div>
+            <div class="art-sweep"></div><div class="art-copy"><strong>次の席を<span style="color:#9bfaff">決める</span></strong><small>座席配置 / 重複なし / 絶対空席を保持</small></div>
           </section>
           <div class="lower-grille"><div class="grille-mesh"></div><div class="grille-center"></div><div class="coin-slot"></div></div>
           <div class="base-foot"></div>
         </div>
-        <div class="impact-banner" id="impactBanner" aria-hidden="true"><span class="impact-title" id="impactTitle">配置確定</span><span class="impact-sub" id="impactSub">LANE 01 // LOCKED</span></div>
+        <div class="impact-banner" id="impactBanner" aria-hidden="true"><span class="impact-title" id="impactTitle">配置確定</span><span class="impact-sub" id="impactSub">第1レーン / 配置を固定</span></div>
       </div>
     </section>
     <aside class="side-console" aria-label="外観デモ設定">
-      <div class="console-intro"><p class="console-kicker">// VISUAL CONTROL DECK</p><h2 class="console-title">OPTIC SYSTEM<br>CONFIGURATION</h2><p class="console-desc">全レーンを回転させ、赤いレーン別ボタンで1本ずつ停止。停止時に席替え結果を確定します。重複排除・絶対空席・コピー・印刷に対応。</p></div>
+      <div class="console-intro"><p class="console-kicker">// 席替え操作パネル</p><h2 class="console-title">座席配置<br>設定・操作</h2><p class="console-desc">レーンを回転させ、赤いレーン別ボタンで1本ずつ確定します。参加者の重複を防ぎ、指定した絶対空席を維持。結果コピーとA4縦型PDFに対応。</p></div>
       <div class="settings-grid">
         <section class="control-group">
           <div class="group-head"><label class="group-title" for="laneRange">レーン数</label><output class="value-readout" id="laneValue">6</output></div>
-          <div class="range-wrap"><input id="laneRange" type="range" min="2" max="12" value="6" step="1"><span style="font-size:9px;color:#8ba1b6">LANES</span></div><div class="range-limits"><span>02 / MIN</span><span>12 / MAX</span></div>
+          <div class="range-wrap"><input id="laneRange" type="range" min="2" max="12" value="6" step="1"><span style="font-size:9px;color:#8ba1b6">レーン</span></div><div class="range-limits"><span>最小 2</span><span>最大 12</span></div>
         </section>
         <section class="control-group">
           <div class="group-head"><label class="group-title" for="rowRange">1レーンの表示数</label><output class="value-readout" id="rowValue">5</output></div>
-          <div class="range-wrap"><input id="rowRange" type="range" min="2" max="12" value="5" step="1"><span style="font-size:9px;color:#8ba1b6">ROWS</span></div><div class="range-limits"><span>02 / MIN</span><span>12 / MAX</span></div>
+          <div class="range-wrap"><input id="rowRange" type="range" min="2" max="12" value="5" step="1"><span style="font-size:9px;color:#8ba1b6">マス</span></div><div class="range-limits"><span>最小 2</span><span>最大 12</span></div>
         </section>
         <section class="control-group">
-          <div class="group-head"><span class="group-title">発光プリセット</span><span class="value-readout" id="lightLabel">PULSE</span></div>
-          <div class="segmented" role="group" aria-label="発光プリセット"><button class="seg" data-light="pulse" aria-pressed="true">PULSE</button><button class="seg" data-light="prism" aria-pressed="false">PRISM</button><button class="seg" data-light="flare" aria-pressed="false">OVERDRIVE</button></div>
+          <div class="group-head"><span class="group-title">発光プリセット</span><span class="value-readout" id="lightLabel">標準発光</span></div>
+          <div class="segmented" role="group" aria-label="発光プリセット"><button class="seg" data-light="pulse" aria-pressed="true">標準</button><button class="seg" data-light="prism" aria-pressed="false">波光</button><button class="seg" data-light="flare" aria-pressed="false">強光</button></div>
         </section>
         <section class="control-group">
           <div class="group-head"><span class="group-title">リール演出速度</span><span class="value-readout" id="speedLabel">×1.0</span></div>
-          <div class="range-wrap"><input id="speedRange" type="range" min="1" max="5" value="4" step="1"><span style="font-size:9px;color:#8ba1b6">SPD ×</span></div><div class="range-limits"><span>CALM</span><span>RAPID</span></div>
+          <div class="range-wrap"><input id="speedRange" type="range" min="1" max="5" value="4" step="1"><span style="font-size:9px;color:#8ba1b6">速度</span></div><div class="range-limits"><span>ゆっくり</span><span>高速</span></div>
         </section>
       </div>
       <section class="roster-panel" aria-label="席替え設定">
-        <div class="roster-head"><label for="roster">参加者リスト</label><small>ROSTER INPUT</small></div>
+        <div class="roster-head"><label for="roster">参加者リスト</label><small>参加者入力</small></div>
         <textarea id="roster" spellcheck="false" aria-describedby="rosterHelp">1-28</textarea>
         <p class="roster-help" id="rosterHelp">改行・カンマ区切りに対応。連番は「1-28」。同じ番号・名前は1件に統合。各レーン停止時に結果を固定します。</p>
         <div class="roster-actions"><button type="button" class="roster-action" id="fillSequential">人数分オート入力</button><button type="button" class="roster-action" id="clearRoster">全消去</button></div>
@@ -494,16 +532,16 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <p class="pin-help">チェック後、リール上の空席にしたいセルをタップ。決定後もその位置は必ず空席になります。</p>
         <div class="fixed-list" id="fixedList">絶対空席：なし</div>
       </section>
-      <div class="primary-actions"><button id="spinBtn" class="action primary">▶ 配置セット・全レーン回転</button><button id="stopBtn" class="action hot" disabled>■ 次のレーンを停止</button></div>
+      <div class="primary-actions"><button id="spinBtn" class="action primary">▶ 座席を決定・全レーン回転</button><button id="stopBtn" class="action hot" disabled>■ 次のレーンを確定</button><button id="autoStopBtn" class="action auto-action" aria-pressed="false">▶ 自動停止を開始（5秒間隔）</button></div>
       <div class="seat-output-actions"><button id="copyBtn" class="result-action" disabled>結果をコピー</button><button id="printBtn" class="result-action" disabled>A4縦型PDFをダウンロード</button></div>
       <div id="resultText" class="result-summary">未確定。参加者を確認して「配置セット・全レーン回転」を押してください。</div>
-      <button id="impactBtn" class="action action-wide">✦ オーバードライブ演出</button>
-      <div class="mini-actions"><button id="lineBtn" class="mini-action" aria-pressed="false">ライン光：OFF</button><button id="blackoutBtn" class="mini-action" aria-pressed="false">瞬間暗転：実行</button></div>
-      <div class="console-readout"><div class="readout-head"><span>LIVE FEEDBACK</span><span class="readout-lamp" id="readoutLamp">● NOMINAL</span></div><div class="readout-main" id="readout">Optical array initialized.<br>Awaiting visual command...</div><div class="readout-bottom"><span id="readoutLanes">ARRAY 06</span><span id="readoutRows">ROWS 05</span><span>DEMO ONLY</span></div></div>
-      <div class="spec-strip"><div class="spec"><b id="specTotal">30</b><span>VISIBLE CELLS</span></div><div class="spec"><b id="specLane">06</b><span>LANES</span></div><div class="spec"><b id="specRow">05</b><span>ROWS / LANE</span></div></div>
+      <button id="impactBtn" class="action action-wide">✦ 強発光・確定演出</button>
+      <div class="mini-actions"><button id="lineBtn" class="mini-action" aria-pressed="false">走査光：切</button><button id="blackoutBtn" class="mini-action" aria-pressed="false">瞬間フラッシュ：実行</button></div>
+      <div class="console-readout"><div class="readout-head"><span>配置状況</span><span class="readout-lamp" id="readoutLamp">● 待機</span></div><div class="readout-main" id="readout">席替えの準備ができました。<br>参加者と空席位置を確認してください。</div><div class="readout-bottom"><span id="readoutLanes">レーン 6</span><span id="readoutRows">各5マス</span><span>座席配置</span></div></div>
+      <div class="spec-strip"><div class="spec"><b id="specTotal">30</b><span>総座席数</span></div><div class="spec"><b id="specLane">06</b><span>レーン数</span></div><div class="spec"><b id="specRow">05</b><span>各レーンのマス数</span></div></div>
     </aside>
   </main>
-  <footer class="footer"><span>NOVA//REACTOR — FICTIONAL CABINET STUDY<br>ONE-FILE HTML / NO EXTERNAL ASSETS</span><span>VISUAL MOCKUP ONLY<br>NO GAME LOGIC / NO PAYOUT LOGIC</span></footer>
+  <footer class="footer"><span>SEAT//SHUFFLE — 席替え・座席配置<br>単一HTML / 外部素材なし</span><span>席替え結果を表示<br>参加者の重複なし / 絶対空席を保持</span></footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -520,7 +558,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     {kind:'nova',glyph:'⬡',label:'N-CORE'}, {kind:'prism',glyph:'⟡',label:'SPECTRA'},
     {kind:'pulse',glyph:'⌁',label:'WAVE'}, {kind:'flare',glyph:'✺',label:'IGNITE'}
   ];
-  let laneCount=6,rowCount=5,speed=4,activeIntervals=new Map(),lightMode='pulse',linesOn=false;
+  let laneCount=6,rowCount=5,speed=4,activeIntervals=new Map(),lightMode='pulse',linesOn=false,autoStopMode=false,autoStopTimer=null;
   let fixedEmpty=new Set(),pendingSeats=null,currentResult=null,lockedLanes=new Set(),spinValues=[];
   let toastTimer=null,blackoutTimer=null,impactTimer=null,finalImpactTimer=null;
   const stopTimers=new Map();
@@ -567,7 +605,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     // a per-frame DOM update loop.
     const duration=Math.max(.13,.49-(speed-1)*.09)/3;
     document.documentElement.style.setProperty('--spin-duration',`${duration.toFixed(3)}s`);
-    $('#speedLabel').textContent=`×${(speed/2).toFixed(1)} / 3× BOOST`;
+    $('#speedLabel').textContent=`×${(speed/2).toFixed(1)}（高速化）`;
   }
   const rowLabel=n=>{let out='';while(n>=0){out=String.fromCharCode(n%26+65)+out;n=Math.floor(n/26)-1;}return out;};
   const seatCode=index=>`${rowLabel(Math.floor(index/laneCount))}${index%laneCount+1}`;
@@ -616,13 +654,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   function syncLaneGhosts(lane){
     if(!lane||!lane._realCells||!lane._ghostCells)return;
     lane._realCells.forEach((real,i)=>{
-      const ghost=lane._ghostCells[i];
-      ghost.className=`${real.className} ghost`;
-      ghost.dataset.kind=real.dataset.kind;
-      ghost._glyph.textContent=real._glyph.textContent;
-      if(real._glyph.dataset.motion)ghost._glyph.dataset.motion=real._glyph.dataset.motion;else delete ghost._glyph.dataset.motion;
-      ghost._label.textContent=real._label.textContent;
-      if(real.title)ghost.title=real.title;else ghost.removeAttribute('title');
+      const ghost=lane._ghostCells[i],className=`${real.className} ghost`;
+      if(ghost.className!==className)ghost.className=className;
+      if(ghost.dataset.kind!==real.dataset.kind)ghost.dataset.kind=real.dataset.kind;
+      if(ghost._glyph.textContent!==real._glyph.textContent)ghost._glyph.textContent=real._glyph.textContent;
+      const motion=real._glyph.dataset.motion;
+      if(ghost._glyph.dataset.motion!==motion){if(motion)ghost._glyph.dataset.motion=motion;else delete ghost._glyph.dataset.motion;}
+      if(ghost._label.textContent!==real._label.textContent)ghost._label.textContent=real._label.textContent;
+      if(ghost.title!==real.title){if(real.title)ghost.title=real.title;else ghost.removeAttribute('title');}
     });
   }
   function setAssignment(cell,index,value,type){
@@ -663,6 +702,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     });
   }
   function resetIntervals(){
+    stopAutoStop(false);
+    if(stopImpactTimer){clearTimeout(stopImpactTimer);stopImpactTimer=null;}machine.style.transform='';machine.classList.remove('stop-impact');
     for(const id of activeIntervals.values())clearInterval(id);activeIntervals.clear();
     for(const id of stopTimers.values())clearTimeout(id);stopTimers.clear();
     clearTimeout(finalImpactTimer);finalImpactTimer=null;
@@ -681,23 +722,54 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     $$('.reel-lane').forEach(l=>{l.classList.remove('stopped');renderLanePreview(Number(l.dataset.lane));});
     $('#copyBtn').disabled=true;$('#printBtn').disabled=true;
     $('#resultText').textContent='未確定。参加者を確認して「配置セット・全レーン回転」を押してください。';$('#resultText').classList.remove('ready');
-    setState('SYSTEM READY','Ready for seat assignment.','NOMINAL');syncPinCells();
+    setState('準備完了','座席配置の準備ができました。','待機');syncPinCells();
   }
-  function sayInputError(message){setState('INPUT ERROR',message,'CHECK INPUT');showToast(message);}
-  function setState(state,message,lamp='NOMINAL'){$('#reelState').textContent=state;$('#readout').textContent=message;$('#readoutLamp').textContent='● '+lamp;}
+  function sayInputError(message){setState('入力を確認',message,'要確認');showToast(message);}
+  function setState(state,message,lamp='待機'){$('#reelState').textContent=state;$('#readout').textContent=message;$('#readoutLamp').textContent='● '+lamp;}
   function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2100);}
+  function updateAutoStopButton(){
+    const button=$('#autoStopBtn');if(!button)return;
+    button.setAttribute('aria-pressed',String(autoStopMode));
+    button.textContent=autoStopMode?'■ 自動停止を解除':'▶ 自動停止を開始（5秒間隔）';
+  }
+  function stopAutoStop(notify=false){
+    if(autoStopTimer!==null){clearTimeout(autoStopTimer);autoStopTimer=null;}
+    const wasActive=autoStopMode;autoStopMode=false;updateAutoStopButton();
+    if(notify&&wasActive)showToast('自動停止を解除しました。');
+  }
+  function toggleAutoStop(){
+    if(autoStopMode){stopAutoStop(false);showToast('自動停止を解除しました。手動でレーンを確定できます。');return;}
+    if(pendingSeats===null){if(!startSeatDraw())return;}
+    if(!activeIntervals.size){showToast('回転中のレーンがありません。');return;}
+    autoStopMode=true;updateAutoStopButton();
+    const autoStopTick=()=>{
+      if(!autoStopMode)return;
+      if(pendingSeats===null||activeIntervals.size===0){stopAutoStop(false);return;}
+      if(stopTimers.size){autoStopTimer=setTimeout(autoStopTick,50);return;}
+      const next=[...activeIntervals.keys()].sort((a,b)=>a-b)[0];
+      if(next===undefined){stopAutoStop(false);return;}
+      stopLane(next,false);
+      // Maintain a five-second interval between stop commands; if a manual
+      // stop overlaps the tick, retry after the 165ms braking window.
+      autoStopTimer=setTimeout(autoStopTick,5000);
+    };
+    autoStopTimer=setTimeout(autoStopTick,5000);
+    setState('自動停止中','5秒ごとに次のレーンを順番に確定します。','自動停止');
+    showToast('自動停止を開始しました。5秒ごとに次のレーンを確定します。');
+  }
   let stopImpactTimer=null;
   function triggerStopImpact(){
+    machine.style.transform='';
     machine.classList.remove('stop-impact');
     void machine.offsetWidth;
     machine.classList.add('stop-impact');
     clearTimeout(stopImpactTimer);
-    stopImpactTimer=setTimeout(()=>machine.classList.remove('stop-impact'),300);
+    stopImpactTimer=setTimeout(()=>{machine.classList.remove('stop-impact');stopImpactTimer=null;},820);
   }
   function showImpact(laneIndex,all=false){
     const banner=$('#impactBanner');
     $('#impactTitle').textContent=all?'全席、完全確定!!':`第${pad(laneIndex+1)}レーン、確定!!`;
-    $('#impactSub').textContent=all?'NOVA//FINAL LOCK — 重複検査 OK':`LANE ${pad(laneIndex+1)} / HARD LOCK — 配置固定`;
+    $('#impactSub').textContent=all?'全レーン確定 — 参加者の重複なし':`第${laneIndex+1}レーン / 配置を固定`;
     banner.classList.remove('show');machine.classList.remove('impact-burst');
     void banner.offsetWidth;banner.classList.add('show');machine.classList.add('impact-burst');
     clearTimeout(impactTimer);impactTimer=setTimeout(()=>machine.classList.remove('impact-burst'),2520);
@@ -705,7 +777,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   function updateSettingsStats(){
     const cap=capacity(),result=getRosterSafely(),roster=result.roster,error=result.error;
     const emptyCount=Math.max(0,cap-roster.length);
-    $('#statSeats').textContent=String(cap);$('#statStudents').textContent=error?'—':String(roster.length);$('#statEmpty').textContent=error?'—':String(emptyCount);
+    $('#statSeats').textContent=String(cap);$('#statStudents').textContent=error?'—':String(roster.length);$('#statEmpty').textContent=error?'—':String(emptyCount);$('#opticRosterCount').textContent=error?'—':String(roster.length);
     fixedEmpty=new Set([...fixedEmpty].filter(i=>i>=0&&i<cap));
     fixedList.textContent=fixedEmpty.size?`絶対空席：${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join('・')}`:'絶対空席：なし';
     syncPinCells();
@@ -725,7 +797,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       const lane=document.createElement('div');lane.className='reel-lane';lane.dataset.lane=String(i);
       const badge=document.createElement('div');badge.className='lane-index';
       const badgeN=document.createElement('span');badgeN.textContent=pad(i+1);
-      const badgeCode=document.createElement('span');badgeCode.textContent='NR';badge.append(badgeN,badgeCode);
+      const badgeCode=document.createElement('span');badgeCode.textContent='列';badge.append(badgeN,badgeCode);
       const strip=document.createElement('div');strip.className='reel-strip';strip.style.gridTemplateRows=`repeat(${rowCount*2},minmax(0,1fr))`;
       const realCells=[],ghostCells=[];
       for(let r=0;r<rowCount;r++){const pos=r*laneCount+i;const cell=makeSymbol({kind:'idle',glyph:'—',label:''},pos);realCells.push(cell);strip.appendChild(cell);}
@@ -736,14 +808,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       btn.addEventListener('click',()=>onDialClick(i));controls.appendChild(btn);
     }
     $('#laneValue').textContent=String(laneCount);$('#rowValue').textContent=String(rowCount);
-    $('#laneCaption').textContent=`${pad(laneCount)} LANES`;$('#rowCaption').textContent=`${pad(laneCount)} × ${pad(rowCount)}`;
-    $('#readoutLanes').textContent=`ARRAY ${pad(laneCount)}`;$('#readoutRows').textContent=`ROWS ${pad(rowCount)}`;
+    $('#laneCaption').textContent=`全${laneCount}レーン`;$('#rowCaption').textContent=`${laneCount} × ${rowCount}`;
+    $('#readoutLanes').textContent=`レーン ${laneCount}`;$('#readoutRows').textContent=`各 ${rowCount} マス`;
     $('#specTotal').textContent=pad(laneCount*rowCount);$('#specLane').textContent=pad(laneCount);$('#specRow').textContent=pad(rowCount);
     applySpinSpeed();
     $('#resultText').textContent='未確定。全レーンを回転させ、レーン別ボタンで1本ずつ停止してください。';$('#resultText').classList.remove('ready');$('#copyBtn').disabled=true;$('#printBtn').disabled=true;$('#stopBtn').disabled=true;
     for(let i=0;i<laneCount;i++)renderLanePreview(i);
     normalizeCellAspectRatio();
-    updateSettingsStats();syncPinCells();setState('SYSTEM READY',`Array ready: ${laneCount} lanes × ${rowCount} seats.`, 'NOMINAL');
+    updateSettingsStats();syncPinCells();setState('準備完了',`${laneCount}レーン × 各${rowCount}マス。参加者と空席位置を確認してください。`,'待機');
   }
   function refreshPreviewAfterEdit(){clearDrawState();updateSettingsStats();}
   function toggleFixed(index){
@@ -754,7 +826,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     if(fixedEmpty.has(index))fixedEmpty.delete(index);
     else{if(fixedEmpty.size>=emptyCount){sayInputError(`絶対空席は最大 ${emptyCount} 席まで指定できます。`);return;}fixedEmpty.add(index);}
     clearDrawState();updateSettingsStats();
-    setState('EMPTY POSITION SET',fixedEmpty.size?`Absolute empty positions: ${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join(', ')}`:'No absolute empty positions selected.','PIN MODE');
+    setState('絶対空席を設定',fixedEmpty.size?`固定する空席位置：${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join('・')}`:'絶対空席は指定されていません。','空席指定');
   }
   function prepareSeats(){
     const {roster,error}=getRosterSafely();if(error)throw new Error(error);
@@ -776,21 +848,23 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     const lane=laneEl(index);if(!lane||activeIntervals.has(index)||stopTimers.has(index))return;
     lane.classList.remove('stopped','braking');lane.classList.add('spinning');
     const work=laneCount*rowCount;
-    const ms=Math.max(9,Math.round((62-speed*7+(work>100?5:0))/3));
+    const ms=33; // 数字更新は約30Hz。連続スクロール自体はCSS合成で維持し、DOM更新負荷を低減。
     const id=setInterval(()=>cycleLane(index),ms);activeIntervals.set(index,id);machine.classList.add('rotating');
     $('#stopBtn').disabled=false;
   }
   function setSpinNumber(cell){
-    cell.classList.remove('assignment','occupied-seat','empty-seat','pinned-empty','idle-symbol');
-    cell.classList.add('rolling-number');
-    cell.dataset.kind='number';
+    if(!cell.classList.contains('rolling-number')){
+      cell.classList.remove('assignment','occupied-seat','empty-seat','pinned-empty','idle-symbol');
+      cell.classList.add('rolling-number');
+    }
+    if(cell.dataset.kind!=='number')cell.dataset.kind='number';
     const value=spinValues.length?normalizeValue(spinValues[Math.floor(Math.random()*spinValues.length)]):'—';
     const glyph=cell._glyph||cell.querySelector('.symbol-glyph');
     const label=cell._label||cell.querySelector('.symbol-label');
-    glyph.textContent=value;
-    glyph.dataset.motion=value;
-    label.textContent='';
-    cell.removeAttribute('title');
+    if(glyph.textContent!==value)glyph.textContent=value;
+    if(glyph.dataset.motion!==value)glyph.dataset.motion=value;
+    if(label.textContent)label.textContent='';
+    if(cell.hasAttribute('title'))cell.removeAttribute('title');
   }
   function cycleLane(index){
     const lane=laneEl(index);if(!lane||!lane._realCells)return;
@@ -798,17 +872,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     syncLaneGhosts(lane);
   }
   function startSeatDraw(){
-    if(pendingSeats!==null){showToast('配置演出は進行中です。レーンごとに停止してください。');return;}
-    if(stopTimers.size){showToast('レーンの減速処理が終わってから開始してください。');return;}
-    let seats;try{seats=prepareSeats();}catch(error){sayInputError(error.message||'設定を確認してください。');return;}
+    if(pendingSeats!==null){showToast('席替え演出は進行中です。レーンごとに確定してください。');return false;}
+    if(stopTimers.size){showToast('レーンの減速演出が終わってから開始してください。');return false;}
+    let seats;try{seats=prepareSeats();}catch(error){sayInputError(error.message||'設定を確認してください。');return false;}
     const rosterForSpin=getRosterSafely().roster.map(normalizeValue).filter(value=>value!=='');
     const numericRoster=rosterForSpin.filter(value=>/^\d+$/.test(value));
     spinValues=numericRoster.length?numericRoster:rosterForSpin;
     clearDrawState();pendingSeats=seats;lockedLanes.clear();
     for(let i=0;i<laneCount;i++)scheduleLane(i);
     $('#stopBtn').disabled=false;
-    setState('ARRAY IGNITION',`${laneCount} lanes at high speed. Stop one lane per button press.`,'RUNNING');
-    showToast('NOVA//REACTOR — ARRAY IGNITION');
+    setState('全レーン回転中',`${laneCount}レーンが回転中です。レーン別ボタンで1本ずつ確定してください。`,'回転中');
+    showToast('全レーンの回転を開始しました。');
+    return true;
   }
   function finishIfComplete(){
     if(pendingSeats===null||lockedLanes.size<laneCount||stopTimers.size>0)return;
@@ -817,18 +892,19 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       if(fixedEmpty.has(i)&&seats[i]!==null){sayInputError('絶対空席の位置が変更されたため、結果を確定できませんでした。');return;}
       if(seats[i]!==null){const key=valueKey(seats[i]);if(seen.has(key)){sayInputError('最終結果に重複があるため、結果を確定できませんでした。');return;}seen.add(key);}
     }
+    stopAutoStop(false);
     currentResult={rows:rowCount,cols:laneCount,seats,rosterCount:seen.size};pendingSeats=null;
     renderAllAssignments(currentResult.seats);$('#copyBtn').disabled=false;$('#printBtn').disabled=false;
     const empties=seats.filter(v=>v===null).length;
     $('#resultText').textContent=`配置確定：${seen.size}人 / 空席 ${empties}席\n絶対空席：${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join('・')||'なし'}`;
-    $('#resultText').classList.add('ready');setState('全レーン確定',`${seen.size}人の重複なし配置 / 空席 ${empties}席。絶対空席の位置を検査済み。`,'LOCKED');
+    $('#resultText').classList.add('ready');setState('全レーン確定',`${seen.size}人の重複なし配置 / 空席 ${empties}席。絶対空席の位置を検査済み。`,'確定済み');
     $('#stopBtn').disabled=true;
     clearTimeout(finalImpactTimer);
     finalImpactTimer=setTimeout(()=>{if(currentResult){showImpact(null,true);showToast('全レーン配置確定 / 重複検査 OK');}},620);
   }
   function stopLane(index,announce=true){
     const lane=laneEl(index);if(!lane)return;
-    if(stopTimers.size){showToast('停止演出中です。減速が完了してから次のレーンを止めてください。');return;}
+    if(stopTimers.size){showToast('停止演出中です。減速が完了してから次のレーンを確定してください。');return;}
     const id=activeIntervals.get(index);if(!id||stopTimers.has(index))return;
     clearInterval(id);activeIntervals.delete(index);
     const strip=lane.querySelector('.reel-strip');
@@ -861,15 +937,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       $('#stopBtn').disabled=activeIntervals.size===0;
       if(pendingSeats!==null){
         const moving=activeIntervals.size,settling=stopTimers.size;
-        $('#reelState').textContent=moving?`ROTATING ${pad(moving)} / ${pad(laneCount)}`:settling?`BRAKING ${pad(settling)}`:'LANES LOCKED';
-        $('#readoutLamp').textContent='● '+(moving?'RUNNING':settling?'BRAKING':'LOCKING');
-        $('#readout').textContent=`第${pad(index+1)}レーンを確定。${lockedLanes.size}/${laneCount} レーン完了。`;
+        $('#reelState').textContent=moving?`回転中 ${moving}/${laneCount}`:settling?`減速中 ${settling}`:'全レーン確定';
+        $('#readoutLamp').textContent='● '+(moving?'回転中':settling?'減速中':'確定中');
+        $('#readout').textContent=`第${index+1}レーンを確定。${lockedLanes.size}/${laneCount}レーン完了。${autoStopMode?'自動停止は5秒間隔で継続します。':''}`;
         finishIfComplete();
       }else{
-        $('#reelState').textContent=activeIntervals.size?`ROTATING ${pad(activeIntervals.size)} / ${pad(laneCount)}`:'SYSTEM READY';
-        $('#readoutLamp').textContent=activeIntervals.size?'● RUNNING':'● NOMINAL';
+        $('#reelState').textContent=activeIntervals.size?`回転中 ${activeIntervals.size}/${laneCount}`:'準備完了';
+        $('#readoutLamp').textContent=activeIntervals.size?'● 回転中':'● 待機';
         $('#readout').textContent=`第${pad(index+1)}レーン停止。`;
-        if(announce)showToast(`第${pad(index+1)}レーン / STOP`);
+        if(announce)showToast(`第${index+1}レーンを停止しました。`);
       }
     },165);
     stopTimers.set(index,timer);
@@ -880,17 +956,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     const next=[...activeIntervals.keys()].sort((a,b)=>a-b)[0];
     if(next!==undefined){stopLane(next,announce);return;}
     if(stopTimers.size)showToast('減速・確定演出中です。');
-    else showToast('停止対象のレーンはありません。');
+    else showToast('停止できるレーンがありません。');
   }
   function onDialClick(index){
-    if(stopTimers.size){showToast('停止演出中です。次のレーンは減速後に停止できます。');return;}
+    if(stopTimers.size){showToast('停止演出中です。次のレーンは減速後に確定できます。');return;}
     if(pendingSeats===null){
-      showToast(currentResult?'再配置する場合は「配置セット・全レーン回転」を押してください。':'先に「配置セット・全レーン回転」を押してください。');
+      showToast(currentResult?'再配置する場合は「座席を決定・全レーン回転」を押してください。':'先に「座席を決定・全レーン回転」を押してください。');
       return;
     }
     if(activeIntervals.has(index)){stopLane(index,true);return;}
-    if(stopTimers.has(index)){showToast(`第${pad(index+1)}レーンは減速中です。`);return;}
-    showToast(`第${pad(index+1)}レーンは停止済みです。`);
+    if(stopTimers.has(index)){showToast(`第${index+1}レーンは減速中です。`);return;}
+    showToast(`第${index+1}レーンは確定済みです。`);
   }
   function resultAsText(){
     if(!currentResult)return '';
@@ -932,7 +1008,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       concatBytes([asciiBytes(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imageWidth} /Height ${imageHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`),jpegBytes,asciiBytes('\nendstream\nendobj\n')]),
       concatBytes([asciiBytes(`5 0 obj\n<< /Length ${content.length} >>\nstream\n`),content,asciiBytes('endstream\nendobj\n')])
     ];
-    const header=asciiBytes('%PDF-1.4\n% NOVA REACTOR\n'),parts=[header],offsets=[0];let offset=header.length;
+    const header=asciiBytes('%PDF-1.4\n% SEAT SHUFFLE\n'),parts=[header],offsets=[0];let offset=header.length;
     objects.forEach((obj,i)=>{offsets[i+1]=offset;parts.push(obj);offset+=obj.length;});
     const xrefOffset=offset;
     let xref='xref\n0 6\n0000000000 65535 f \n';
@@ -941,7 +1017,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     parts.push(asciiBytes(xref));return concatBytes(parts);
   }
   async function downloadResultPdf(){
-    if(!currentResult){showToast('先に座席を決定してください。');return;}
+    if(!currentResult){showToast('先に座席配置を確定してください。');return;}
     try{
       // Browser canvas renders Japanese names using the device's fonts, then a
       // single JPEG page is embedded into a valid, downloadable PDF.
@@ -982,11 +1058,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         lines.forEach((line,lineNo)=>ctx.fillText(line,x+cellSize/2,mainY+lineNo*lineHeight, maxWidth));
       }
       ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#7b8490';ctx.font='600 13px system-ui, -apple-system, "Segoe UI", sans-serif';
-      ctx.fillText('NOVA//REACTOR — 座席配置結果 / 絶対空席と重複を検査済み',64,1690);
+      ctx.fillText('席替え配置 — 絶対空席を保持・参加者の重複なしを確認',64,1690);
       const dataUrl=canvas.toDataURL('image/jpeg',.94),encoded=dataUrl.slice(dataUrl.indexOf(',')+1),binary=atob(encoded),jpeg=new Uint8Array(binary.length);
       for(let i=0;i<binary.length;i++)jpeg[i]=binary.charCodeAt(i);
       const pdf=makeImagePdf(jpeg,W,H),blob=new Blob([pdf],{type:'application/pdf'}),url=URL.createObjectURL(blob);
-      const a=document.createElement('a'),datePart=stamp.replaceAll('-','');a.href=url;a.download=`NOVA_REACTOR_seat_result_${datePart}.pdf`;document.body.appendChild(a);a.click();a.remove();
+      const a=document.createElement('a'),datePart=stamp.replaceAll('-','');a.href=url;a.download=`seat_shuffle_result_${datePart}.pdf`;document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(url),1500);showToast('縦型A4・座席マス正方形のPDFをダウンロードしました。');
     }catch(error){console.error(error);showToast('PDFを生成できませんでした。ブラウザを確認してください。');}
   }
@@ -994,14 +1070,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   window.addEventListener('resize',()=>{updateCabinetWidth();normalizeCellAspectRatio();});
   machine.addEventListener('transitionend',event=>{if(event.propertyName==='width')normalizeCellAspectRatio();});
   rosterInput.addEventListener('input',refreshPreviewAfterEdit);
-  pinMode.addEventListener('change',()=>{syncPinCells();setState(pinMode.checked?'PIN MODE ACTIVE':'SYSTEM READY',pinMode.checked?'リール上のセルを選択して絶対空席に指定してください。':'Absolute empty selection mode disabled.',pinMode.checked?'PIN MODE':'NOMINAL');});
+  pinMode.addEventListener('change',()=>{syncPinCells();setState(pinMode.checked?'空席指定モード':'準備完了',pinMode.checked?'座席マスを選択して絶対空席に指定してください。':'絶対空席の指定を終了しました。',pinMode.checked?'空席指定':'待機');});
   reelWindow.addEventListener('click',event=>{const cell=event.target.closest('.symbol:not(.ghost)');if(cell&&pinMode.checked)toggleFixed(Number(cell.dataset.seatIndex));});
   reelWindow.addEventListener('keydown',event=>{const cell=event.target.closest('.symbol:not(.ghost)');if(cell&&pinMode.checked&&(event.key==='Enter'||event.key===' ')){event.preventDefault();toggleFixed(Number(cell.dataset.seatIndex));}});
   $('#fillSequential').addEventListener('click',()=>{const count=Math.max(1,capacity()-fixedEmpty.size);rosterInput.value=`1-${count}`;refreshPreviewAfterEdit();});
   $('#clearRoster').addEventListener('click',()=>{rosterInput.value='';refreshPreviewAfterEdit();});
-  $('#spinBtn').addEventListener('click',startSeatDraw);$('#stopBtn').addEventListener('click',()=>stopNextLane(true));$('#impactBtn').addEventListener('click',overdrive);
+  $('#spinBtn').addEventListener('click',startSeatDraw);$('#stopBtn').addEventListener('click',()=>stopNextLane(true));$('#autoStopBtn').addEventListener('click',toggleAutoStop);$('#impactBtn').addEventListener('click',overdrive);
   $('#copyBtn').addEventListener('click',async()=>{
-    const text=resultAsText();if(!text){showToast('先に座席を決定してください。');return;}
+    const text=resultAsText();if(!text){showToast('先に座席配置を確定してください。');return;}
     try{
       if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(text);
       else{const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const copied=document.execCommand('copy');area.remove();if(!copied)throw new Error('copy failed');}
@@ -1016,22 +1092,22 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   });
   function setLight(mode,notify=true){
     lightMode=mode;$$('[data-light]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.light===mode)));
-    $('#lightLabel').textContent=mode==='pulse'?'PULSE':mode==='prism'?'PRISM':'OVERDRIVE';
+    $('#lightLabel').textContent=mode==='pulse'?'標準発光':mode==='prism'?'波光発光':'強発光';
     document.documentElement.style.setProperty('--glow',mode==='flare'?'2.8':mode==='prism'?'2':'1.35');
     document.documentElement.style.setProperty('--cyan',mode==='prism'?'#b08cff':mode==='flare'?'#fff18a':'#6cf7ff');
     document.documentElement.style.setProperty('--violet',mode==='pulse'?'#a85bff':mode==='prism'?'#ff4ca8':'#ff6e3a');
     machine.classList.toggle('flare',mode==='flare');
     if(mode==='prism')machine.style.filter='drop-shadow(0 28px 22px #0009) hue-rotate(24deg)';else machine.style.filter='drop-shadow(0 28px 22px #0009)';
-    if(notify)showToast(`${mode.toUpperCase()} LIGHTING ACTIVE`);
+    if(notify)showToast(mode==='pulse'?'標準発光に切り替えました。':mode==='prism'?'波光発光に切り替えました。':'強発光に切り替えました。');
   }
   function overdrive(){
-    machine.classList.remove('blackout');machine.classList.add('flare');setLight('flare');machine.classList.add('show-line');$('#lineBtn').setAttribute('aria-pressed','true');$('#lineBtn').textContent='ライン光：ON';
-    setState('OVERDRIVE SEQUENCE','Prism rails synchronized. Core flare and scanline active.','OVERDRIVE');showToast('✦ OVERDRIVE / OPTICAL BURST');
+    machine.classList.remove('blackout');machine.classList.add('flare');setLight('flare');machine.classList.add('show-line');$('#lineBtn').setAttribute('aria-pressed','true');$('#lineBtn').textContent='走査光：入';
+    setState('強発光演出中','発光レールと走査光を同期しました。','強発光');showToast('✦ 強発光・確定演出');
     setTimeout(()=>{machine.classList.remove('flare');if(lightMode!=='flare')setLight(lightMode);},1450);
   }
   $$('[data-light]').forEach(btn=>btn.addEventListener('click',()=>setLight(btn.dataset.light)));
-  $('#lineBtn').addEventListener('click',()=>{linesOn=!linesOn;machine.classList.toggle('show-line',linesOn);$('#lineBtn').setAttribute('aria-pressed',String(linesOn));$('#lineBtn').textContent=`ライン光：${linesOn?'ON':'OFF'}`;showToast(`SCAN LINE ${linesOn?'ENABLED':'DISABLED'}`);});
-  $('#blackoutBtn').addEventListener('click',()=>{machine.classList.add('blackout');setState('OPTICAL DROP','Brief illumination cut. Power rails recovering...','TRANSIENT');showToast('OPTICAL DROP / RECOVERY');clearTimeout(blackoutTimer);blackoutTimer=setTimeout(()=>{machine.classList.remove('blackout');setState('SYSTEM RECOVERED','Light rails synchronized. Visual array back online.','NOMINAL');},430);});
+  $('#lineBtn').addEventListener('click',()=>{linesOn=!linesOn;machine.classList.toggle('show-line',linesOn);$('#lineBtn').setAttribute('aria-pressed',String(linesOn));$('#lineBtn').textContent=`走査光：${linesOn?'入':'切'}`;showToast(`走査光を${linesOn?'入':'切'}にしました。`);});
+  $('#blackoutBtn').addEventListener('click',()=>{machine.classList.add('blackout');setState('瞬間フラッシュ','発光を一瞬切り替えています。','演出中');showToast('瞬間フラッシュ演出');clearTimeout(blackoutTimer);blackoutTimer=setTimeout(()=>{machine.classList.remove('blackout');setState('演出復帰','発光と座席表示が通常状態に戻りました。','待機');},430);});
   buildLanes();setLight('pulse',false);
 })();
 </script>
