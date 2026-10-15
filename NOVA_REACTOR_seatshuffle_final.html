@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d16">
+<title>NOVA//REACTOR — Slot Cabinet Visual Prototype</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#080b12;--bg2:#111827;--metal:#303846;--metal2:#111722;--edge:#7f8a9b;
+  --cyan:#6cf7ff;--blue:#278aff;--violet:#a85bff;--pink:#ff4ca8;--lime:#bcff48;
+  --gold:#ffc96b;--red:#ff3c54;--white:#eaf5ff;--rows:5;--lanes:6;--glow:1;
+  --cabinet-w:612px;
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 50% 10%,#20314a 0,#101725 28%,#080b12 70%);}
+button,input,select{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.ambient-grid{position:fixed;inset:0;pointer-events:none;opacity:.21;background-image:linear-gradient(#8ceeff12 1px,transparent 1px),linear-gradient(90deg,#8ceeff12 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+.page{position:relative;max-width:1660px;margin:auto;padding:22px clamp(12px,2.2vw,32px) 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 auto 22px;max-width:1600px}
+.brand-lockup{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-mark{width:38px;height:38px;position:relative;flex:0 0 auto;border:1px solid #73efff9a;transform:rotate(45deg);background:linear-gradient(135deg,#1e3e57,#0c1524);box-shadow:0 0 18px #32cfff28,inset 0 0 12px #4bf5ff21}
+.brand-mark:before,.brand-mark:after{content:"";position:absolute;inset:7px;border:1px solid var(--cyan)}.brand-mark:after{inset:13px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.brand-name{font-size:14px;letter-spacing:.19em;font-weight:900;white-space:nowrap}.brand-sub{margin-top:3px;color:#91a6bd;font-size:9px;letter-spacing:.22em;white-space:nowrap}
+.top-status{display:flex;align-items:center;gap:8px;color:#a9bed3;font:700 10px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.12em;text-align:right}
+.status-led{width:7px;height:7px;border-radius:50%;background:#9dff5b;box-shadow:0 0 10px #9dff5b;animation:blink 2.2s infinite}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(275px,330px);gap:clamp(16px,3vw,42px);align-items:start;max-width:1600px;margin:auto}
+.machine-stage{display:flex;justify-content:flex-start;min-width:0;min-height:0;overflow-x:auto;overflow-y:hidden;perspective:1300px;padding:0 2px 18px;scrollbar-color:#42647c #0a111b;scrollbar-width:thin}
+.machine{position:relative;width:var(--cabinet-w);max-width:none;flex:0 0 auto;margin-inline:auto;isolation:isolate;filter:drop-shadow(0 28px 22px #0009);transform:rotateY(-1deg);transition:width .22s ease}
+.machine:before{content:"";position:absolute;z-index:-3;inset:10px -8px -5px 10px;background:#02040a;clip-path:polygon(4% 0,96% 0,100% 3%,100% 96%,96% 100%,2% 98%,0 94%,0 5%);box-shadow:0 0 0 2px #080c14}
+.cabinet-shell{position:relative;padding:10px 11px 12px;border:1px solid #929eae;border-radius:20px 20px 12px 12px;background:linear-gradient(100deg,#10141d 0%,#69717e 2%,#252d3a 5%,#101520 11%,#2c3543 50%,#111722 89%,#777f8c 96%,#151a23 99%);box-shadow:inset 0 0 0 2px #0a0e17,inset 0 0 0 4px #8995a64d,inset 0 18px 26px #ffffff0b,0 0 0 1px #05070b}
+.cabinet-shell:before{content:"";position:absolute;top:9px;bottom:10px;left:3px;width:4px;background:linear-gradient(#b7f7ff,#2b7d9c,#101723,#50e7ff,#101723);opacity:.7;box-shadow:0 0 13px #3deaff8a}
+.cabinet-shell:after{content:"";position:absolute;top:9px;bottom:10px;right:3px;width:4px;background:linear-gradient(#b7f7ff,#2b7d9c,#101723,#50e7ff,#101723);opacity:.7;box-shadow:0 0 13px #3deaff8a}
+.top-cap{position:relative;height:clamp(88px,12vw,126px);min-height:88px;margin:0 7px 9px;padding:7px 10px 10px;border-radius:13px 13px 4px 4px;background:linear-gradient(180deg,#121d2b,#050a13 65%,#13263a);border:2px solid #657b91;box-shadow:inset 0 0 0 2px #101723,inset 0 0 22px #00d9ff39,0 3px 0 #080c12;overflow:hidden}
+.top-cap:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 17px,#83f8ff0b 18px 20px,transparent 21px 35px),linear-gradient(90deg,#04d9ff1f,transparent 30%,#ba62ff19 70%,#04d9ff1f);pointer-events:none}
+.cap-rail{position:absolute;left:8px;right:8px;top:5px;height:4px;border-radius:8px;background:linear-gradient(90deg,#20cfff,#d6ffff,#a55bff,#fff,#20cfff);box-shadow:0 0 calc(10px * var(--glow)) var(--cyan);opacity:.9}
+.cap-bolts{position:absolute;left:9px;right:9px;bottom:5px;display:flex;justify-content:space-between}.bolt{width:6px;height:6px;border:1px solid #a6bdcb;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#60788b 40%,#111823 75%);box-shadow:0 0 4px #000}
+.cap-eyebrow{position:relative;text-align:center;font:700 8px/1.2 ui-monospace,monospace;letter-spacing:.48em;color:#a7eaff;text-shadow:0 0 8px #26dfff;margin:7px 0 3px}
+.cap-title{position:relative;text-align:center;margin:0;font-weight:1000;font-stretch:condensed;font-size:clamp(21px,3.5vw,38px);line-height:1;letter-spacing:.08em;font-style:italic;color:#f4feff;-webkit-text-stroke:.4px #fff;text-shadow:0 2px 0 #1a718e,0 4px 0 #092238,0 0 6px #7ffaff,0 0 20px #30dfff,3px 0 #a14bff,-2px 0 #20caff}
+.cap-title span{color:#9bffdc}.cap-tagline{position:relative;margin-top:5px;text-align:center;font:800 8px/1.3 ui-monospace,monospace;color:#bdcddd;letter-spacing:.25em}
+.cap-corners{position:absolute;bottom:8px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:end}.microbar{height:3px;width:34%;background:repeating-linear-gradient(90deg,#7af8ff 0 3px,transparent 3px 6px);opacity:.7}.microbar:last-child{transform:scaleX(-1)}
+.optic-row{height:25px;margin:0 8px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.optic-cluster{display:flex;align-items:center;gap:5px}.optic{position:relative;width:18px;height:18px;border-radius:50%;border:2px solid #5e7186;background:radial-gradient(circle at 35% 28%,#fff,#62faff 9%,#075f91 35%,#07101c 70%);box-shadow:0 0 9px #12ceff7a,inset 0 0 4px #e4ffff;}.optic.purple{background:radial-gradient(circle at 35% 28%,#fff,#ee9bff 9%,#7c1cbb 35%,#10071c 70%);box-shadow:0 0 9px #bb47ff88,inset 0 0 4px #ffe4ff}.optic.red{background:radial-gradient(circle at 35% 28%,#fff,#ff9a9f 9%,#b51234 35%,#18050a 70%);box-shadow:0 0 9px #ff2d5588,inset 0 0 4px #ffe4e4}
+.optic-label{font:700 8px/1 ui-monospace,monospace;letter-spacing:.1em;color:#839ab0}
+.reel-bezel{position:relative;padding:11px 9px 10px;border-radius:13px;background:linear-gradient(135deg,#748395,#1a2430 8%,#070b12 18%,#344354 50%,#080c13 84%,#8493a4);box-shadow:inset 0 0 0 2px #04070d,inset 0 0 0 4px #a7b6c13a,0 3px 0 #04060a;overflow:hidden}
+.reel-bezel:before{content:"";position:absolute;inset:3px;border:1px solid #8eb3c777;border-radius:10px;pointer-events:none}
+.reel-bezel:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,#fff0 0%,#fff0 30%,#c4faff13 43%,#fff0 53%,#fff0 100%);mix-blend-mode:screen}
+.reel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 2px 8px;padding:0 3px;color:#aec6d8;font:800 8px/1.2 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase}
+.reel-head .live{color:#a4ff70}.live:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:5px;box-shadow:0 0 8px currentColor;vertical-align:1px}
+.reel-window{position:relative;height:clamp(170px,calc(var(--rows) * 36px),390px);display:grid;grid-template-columns:repeat(var(--lanes),minmax(0,1fr));gap:clamp(2px,.5vw,5px);padding:5px;border:2px solid #02050a;border-radius:5px;background:#030710;box-shadow:inset 0 0 0 1px #748b9d,inset 0 0 27px #5beeff20,0 0 0 1px #05070a;overflow:hidden}
+.reel-window:before,.reel-window:after{content:"";position:absolute;z-index:3;left:0;right:0;height:10%;pointer-events:none}.reel-window:before{top:0;background:linear-gradient(#030711ed,transparent)}.reel-window:after{bottom:0;background:linear-gradient(transparent,#030711ed)}
+.reel-lane{position:relative;min-width:0;display:grid;grid-template-rows:repeat(var(--rows),minmax(0,1fr));gap:2px;overflow:hidden;border:1px solid #879fb28a;border-radius:3px;background:linear-gradient(90deg,#26313c,#dbe9ed 5%,#707d87 10%,#131c27 20%,#eafcff 48%,#46535f 73%,#0b1017 95%);box-shadow:inset 0 0 0 1px #05070a,inset 0 0 10px #000;}
+.reel-lane:before{content:"";position:absolute;z-index:2;inset:0;pointer-events:none;background:linear-gradient(90deg,#0008,transparent 12%,#fff2 48%,transparent 78%,#0008);}
+.symbol{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:0;overflow:hidden;background:linear-gradient(145deg,#f8ffff 0%,#b9c8d4 22%,#fff 46%,#98abba 100%);color:#122236;border-bottom:1px solid #354c5c;isolation:isolate;text-align:center;text-shadow:0 1px 0 #fff8;box-shadow:inset 0 0 0 1px #fff6}
+.symbol:before{content:"";position:absolute;inset:2px;border:1px solid #70859555;clip-path:polygon(0 0,100% 0,100% 70%,80% 100%,0 100%);z-index:-1}
+.symbol-glyph{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(14px,2.1vw,26px);line-height:.95;font-weight:1000;filter:drop-shadow(0 1px 0 #fff);transform:scaleX(1.05)}
+.symbol-label{font:900 clamp(5px,.65vw,8px)/1 ui-monospace,monospace;letter-spacing:.03em;margin-top:2px;opacity:.85;white-space:nowrap}
+.symbol.assignment{padding:2px 1px;justify-content:center;gap:2px;background:linear-gradient(145deg,#f2ffff 0%,#b9d9e8 24%,#f8ffff 48%,#7f9eb5 100%);color:#08273d;text-shadow:0 1px 0 #fff9;box-shadow:inset 0 0 0 1px #fff8,inset 0 -4px 9px #183a5633}
+.symbol.assignment .symbol-glyph{max-width:100%;font-size:clamp(7px,1.15vw,16px);line-height:1.02;white-space:normal;overflow-wrap:anywhere;word-break:break-word;transform:none;filter:none;text-shadow:0 1px 0 #fff9}
+.symbol.assignment .symbol-label{max-width:100%;font-size:clamp(4px,.52vw,7px);line-height:1.05;white-space:normal;overflow-wrap:anywhere;margin-top:0;letter-spacing:0}
+.symbol.assignment.empty-seat{background:linear-gradient(145deg,#263649,#101925 55%,#34445a);color:#afc5d7;text-shadow:0 0 6px #79dfff77;box-shadow:inset 0 0 0 1px #7895aa66}
+.symbol.assignment.pinned-empty{background:linear-gradient(145deg,#231e21,#090b11 58%,#322733);color:#ffd68b;border:1px dashed #ffbc5a;box-shadow:inset 0 0 0 1px #ffbc5a44,0 0 9px #ffb34a22}
+.symbol.assignment.pinned-empty .symbol-glyph{font-size:clamp(6px,.9vw,12px);text-shadow:0 0 8px #ffad40}
+.machine.pin-mode .symbol:not(.pinned-empty){cursor:pointer}.machine.pin-mode .symbol:hover{outline:1px solid #fff;outline-offset:-2px;filter:brightness(1.16)}
+.symbol[data-kind="nova"]{color:#087aab;background:linear-gradient(145deg,#edffff,#74f2ff 40%,#d6ffff 57%,#2480b5);text-shadow:0 0 5px #fff}
+.symbol[data-kind="flare"]{color:#c31c54;background:linear-gradient(145deg,#fff9ee,#ffc47e 30%,#ffeecb 52%,#e44c70)}
+.symbol[data-kind="prism"]{color:#7135b8;background:linear-gradient(145deg,#fcf5ff,#d8adff 38%,#fff 55%,#9070dd)}
+.symbol[data-kind="pulse"]{color:#077964;background:linear-gradient(145deg,#effff6,#9fffe0 40%,#fff 56%,#36bd9d)}
+.symbol[data-kind="crown"]{color:#9f6211;background:linear-gradient(145deg,#fffde9,#ffe27a 35%,#fff3c4 55%,#c58b24)}
+.symbol[data-kind="void"]{color:#d8eaff;background:linear-gradient(145deg,#283352,#131c3d 45%,#4e2e87);text-shadow:0 0 8px #8edbff}
+.symbol[data-kind="comet"]{color:#b01f89;background:linear-gradient(145deg,#fff0ff,#ffa9eb 38%,#fff 55%,#d760b5)}
+.symbol[data-kind="orbit"]{color:#48566b;background:linear-gradient(145deg,#fff,#cbd5e4 40%,#fff 60%,#7f94b4)}
+.lane-index{position:absolute;z-index:5;top:3px;left:4px;right:4px;display:flex;justify-content:space-between;font:800 7px/1 ui-monospace,monospace;color:#effbff;text-shadow:0 1px 3px #000;pointer-events:none;opacity:.75}
+.lane-index span:last-child{color:#8ef8ff}
+.lane-stop{position:absolute;z-index:6;left:50%;bottom:4px;transform:translateX(-50%);width:clamp(10px,1.2vw,15px);height:4px;border-radius:5px;background:#526070;box-shadow:inset 0 1px 1px #fff9,0 0 2px #000}
+.reel-lane.spinning .symbol{filter:blur(.72px) saturate(1.18);}
+.reel-lane.spinning .symbol-glyph{transform:scaleY(1.72) skewY(-9deg) scaleX(.94);filter:blur(.55px);text-shadow:0 -8px 5px #b7ffffa8,0 5px 4px #34dfffba,0 12px 9px #34dfff4d}
+.reel-lane.spinning .symbol-label{filter:blur(.85px);opacity:.58}
+.reel-lane.spinning:after{content:"";position:absolute;z-index:3;inset:-30% -18%;pointer-events:none;background:repeating-linear-gradient(100deg,transparent 0 6px,#eaffff1c 7px 8px,transparent 9px 14px),linear-gradient(180deg,transparent 0%,#d9ffff20 22%,#fff9 46%,#4ce7ff54 51%,#c2ffff22 60%,transparent 84%);mix-blend-mode:screen;filter:blur(1px);animation:vectorSweep .14s linear infinite}
+.reel-lane.spinning:before{opacity:.7;background:linear-gradient(90deg,#000a,transparent 8%,#fff5 45%,transparent 78%,#000a),linear-gradient(180deg,transparent 28%,#d6ffff22 47%,#fff6 50%,#31dfff25 53%,transparent 74%)}
+@keyframes vectorSweep{from{transform:translateY(-13%) skewY(-2deg)}to{transform:translateY(13%) skewY(2deg)}}
+.reel-lane.spinning .lane-stop{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.reel-lane.stopped .lane-stop{background:#9fff6a;box-shadow:0 0 8px #9fff6a}
+.reel-lane.stopped{box-shadow:inset 0 0 0 1px #8cff92,inset 0 0 14px #62ff6b22}
+.reel-lane.impact-stop{animation:laneImpact .54s cubic-bezier(.12,.76,.15,1)}
+@keyframes laneImpact{0%{filter:brightness(1);box-shadow:inset 0 0 0 1px #8cff92}18%{filter:brightness(2.4);box-shadow:inset 0 0 0 3px #fff,0 0 30px #5cfbff,0 0 60px #a85bff}100%{filter:brightness(1);box-shadow:inset 0 0 0 1px #8cff92,inset 0 0 14px #62ff6b22}}
+
+.reel-sweep{position:absolute;z-index:5;left:0;right:0;top:-45%;height:28%;opacity:0;pointer-events:none;background:linear-gradient(180deg,transparent,#dfffff9c 45%,#68eaffa0 53%,transparent);filter:blur(4px);mix-blend-mode:screen}.machine.rotating .reel-sweep{opacity:1;animation:globalSpinSweep .34s linear infinite}
+.machine.rotating .cap-rail{animation:railSurge .32s ease-in-out infinite alternate}
+.machine.rotating .optic{animation:opticSurge .42s steps(2,end) infinite}
+.machine.rotating .reel-bezel{box-shadow:inset 0 0 0 2px #f7ffff,inset 0 0 28px #5beeff4a,0 0 15px #40eaff4d}
+.machine.rotating .cabinet-shell:before,.machine.rotating .cabinet-shell:after{opacity:1;filter:brightness(1.7)}
+@keyframes globalSpinSweep{from{transform:translateY(0)}to{transform:translateY(520%)}}
+@keyframes railSurge{from{opacity:.6;filter:brightness(1)}to{opacity:1;filter:brightness(2.2)}}
+@keyframes opticSurge{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.9);transform:scale(1.08)}}
+.reel-side-led{position:absolute;z-index:4;top:34px;bottom:25px;width:3px;border-radius:8px;background:linear-gradient(transparent,var(--cyan),#fff,var(--violet),transparent);box-shadow:0 0 calc(12px * var(--glow)) var(--cyan);opacity:.78}.reel-side-led.left{left:4px}.reel-side-led.right{right:4px}
+.win-line{position:absolute;z-index:4;left:0;right:0;top:50%;height:1px;background:#ff5eea;box-shadow:0 0 5px #ff5eea,0 0 12px #ff5eea;opacity:0;pointer-events:none}.machine.show-line .win-line{opacity:.85;animation:lineSweep 1.8s ease-in-out infinite}
+@keyframes lineSweep{0%,100%{transform:translateY(-45px);opacity:.15}50%{transform:translateY(35px);opacity:1}}
+.under-display{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 4px 0;color:#8298ae;font:800 7px/1.2 ui-monospace,monospace;letter-spacing:.1em}
+.ticker{overflow:hidden;white-space:nowrap;color:#91eaff;text-shadow:0 0 8px #29dfff}.ticker span{display:inline-block;animation:ticker 16s linear infinite}@keyframes ticker{from{transform:translateX(80%)}to{transform:translateX(-100%)}}
+.control-deck{position:relative;display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:11px 2px 10px;padding:9px 12px;border:1px solid #8492a2;border-radius:7px;background:linear-gradient(180deg,#687483 0%,#1c2632 9%,#0c111a 55%,#252e39 92%,#080b10);box-shadow:inset 0 0 0 2px #0a0e15,inset 0 0 0 3px #91a7b22b,0 3px 0 #05070b}
+.deck-label{font:800 7px/1.2 ui-monospace,monospace;letter-spacing:.14em;color:#8ea3b8;text-align:center}
+.deck-control{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(5px,1vw,12px);min-width:0}
+.dial{width:clamp(18px,2.6vw,32px);height:clamp(18px,2.6vw,32px);flex:0 0 auto;border-radius:50%;padding:0;border:2px solid #a9bac6;background:radial-gradient(circle at 35% 27%,#f8ffff 0,#fb5664 13%,#bb132c 42%,#310a13 75%);box-shadow:0 0 0 3px #151d27,0 0 8px #ff314d66,inset 0 -3px 6px #0009;position:relative;transition:filter .16s,transform .16s}
+.dial:before{content:"";position:absolute;inset:5px;border-radius:50%;border-top:1px solid #ffd6d7;opacity:.8}.dial:hover{filter:brightness(1.3)}.dial:active{transform:scale(.92)}.dial.active{background:radial-gradient(circle at 35% 27%,#fff,#fff5b7 12%,#ffac29 43%,#642400 76%);box-shadow:0 0 0 3px #151d27,0 0 17px #ffb22f}
+.deck-foot{display:flex;justify-content:space-between;gap:6px;margin:0 5px 8px;color:#74899b;font:700 7px/1.2 ui-monospace,monospace;letter-spacing:.15em}
+.art-panel{position:relative;margin:0 1px 9px;height:clamp(118px,18vw,190px);min-height:118px;overflow:hidden;border:2px solid #61798b;border-radius:7px 7px 18px 18px;background:linear-gradient(135deg,#080d1a,#102646 35%,#060b18 72%,#161022);box-shadow:inset 0 0 0 3px #050811,inset 0 0 28px #4be4ff20,0 3px 0 #05070b}
+.art-panel:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(118deg,transparent 0 25px,#49e8ff0a 26px 28px,transparent 29px 50px),radial-gradient(ellipse at 50% 50%,#5b20ff38,transparent 55%);z-index:1;pointer-events:none}
+.art-svg{position:absolute;width:100%;height:100%;inset:0}
+.art-copy{position:absolute;z-index:2;left:8%;right:8%;bottom:12%;text-align:center;text-transform:uppercase;pointer-events:none}.art-copy strong{display:block;font-size:clamp(18px,3.3vw,32px);font-style:italic;font-weight:1000;letter-spacing:.12em;color:#f3feff;-webkit-text-stroke:.5px #fff;text-shadow:0 2px #0a2a4d,0 4px #06162e,0 0 8px #6cf7ff,0 0 23px #00ceff,2px 0 #b05cff,-2px 0 #278aff}.art-copy small{display:block;margin-top:3px;font:800 7px/1.2 ui-monospace,monospace;letter-spacing:.38em;color:#b5edff;text-shadow:0 0 10px #37ceff}
+.art-sweep{position:absolute;z-index:2;top:-30%;bottom:-30%;left:-20%;width:12%;transform:skewX(-20deg);background:linear-gradient(90deg,transparent,#bdfdff8c,transparent);filter:blur(5px);animation:sweep 5s ease-in-out infinite}
+@keyframes sweep{0%,20%{left:-20%;opacity:0}40%{opacity:.9}72%,100%{left:120%;opacity:0}}
+.lower-grille{position:relative;margin:0 4px;padding:8px 15px 7px;height:43px;border:1px solid #586372;border-radius:3px;background:linear-gradient(180deg,#4e5965,#10151d 22%,#090c12 78%,#353c47);box-shadow:inset 0 0 0 2px #090b10;overflow:hidden}
+.grille-mesh{position:absolute;inset:4px 12px 9px;background:radial-gradient(circle,#06080c 0 1.7px,transparent 2px);background-size:6px 5px;opacity:.82}.grille-center{position:absolute;left:50%;top:50%;width:22px;height:22px;transform:translate(-50%,-50%);border:1px solid #687887;border-radius:50%;background:radial-gradient(circle,#465769,#080c12 70%);box-shadow:0 0 0 3px #171e27}.grille-center:after{content:"NR";position:absolute;inset:0;display:grid;place-items:center;color:#92aabd;font:900 7px/1 ui-monospace,monospace}
+.coin-slot{position:absolute;right:13%;bottom:4px;width:41px;height:4px;border-radius:4px;background:#010205;box-shadow:0 1px 0 #74828f}
+.base-foot{height:13px;margin:0 13px;background:linear-gradient(180deg,#303946,#06080d);clip-path:polygon(0 0,100% 0,93% 100%,7% 100%);border-bottom:1px solid #5c6979}
+.machine.flare .cabinet-shell{box-shadow:inset 0 0 0 2px #0a0e17,inset 0 0 0 4px #fff9,inset 0 0 38px #72f8ff55,0 0 28px #45eaff8c}
+.machine.flare .top-cap,.machine.flare .art-panel{box-shadow:inset 0 0 0 2px #101723,inset 0 0 30px #00d9ff8c,0 0 25px #b96dff8c}
+.machine.flare .cap-title{animation:titlePulse .34s alternate infinite}
+@keyframes titlePulse{to{filter:brightness(1.6);text-shadow:0 2px 0 #1a718e,0 4px 0 #092238,0 0 12px #fff,0 0 32px #30dfff,3px 0 #a14bff,-2px 0 #20caff}}
+.impact-banner{position:absolute;z-index:40;left:50%;top:34%;width:max-content;max-width:94%;padding:12px clamp(16px,3vw,34px) 13px;text-align:center;transform:translate(-50%,-50%) skewX(-10deg) scale(.55);opacity:0;pointer-events:none;border:2px solid #f1ffff;background:linear-gradient(100deg,#030914f5,#11314cf7 26%,#32134cf7 64%,#080d18f7);box-shadow:0 0 0 3px #08111d,0 0 22px #7af7ff,0 0 52px #a44dff,0 0 95px #ff3d9a44,inset 0 0 21px #c9ffff70;clip-path:polygon(4% 0,100% 0,96% 100%,0 100%);isolation:isolate;overflow:hidden}
+.impact-banner:before{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(0deg,transparent 0 3px,#e5ffff12 4px 5px),linear-gradient(110deg,transparent 15%,#8af6ff28 48%,transparent 65%);pointer-events:none}
+.impact-banner.show{animation:impactBanner .86s cubic-bezier(.08,.84,.16,1) both}
+.impact-title{display:block;font-size:clamp(22px,4.5vw,48px);line-height:.98;font-weight:1000;letter-spacing:.12em;color:#fff;-webkit-text-stroke:.7px #fff;text-shadow:0 2px #1474a0,0 5px #09162b,0 0 7px #fff,0 0 20px #5df4ff,4px 0 #ff3d9a,-3px 0 #3f8bff,0 0 38px #c9ffff;white-space:nowrap;transform:scaleX(1.04)}
+.impact-sub{display:block;margin-top:8px;color:#d6ffff;font:1000 clamp(8px,1.1vw,11px)/1.2 ui-monospace,monospace;letter-spacing:.18em;text-shadow:0 0 8px #52e8ff,0 0 16px #b95eff}
+@keyframes impactBanner{0%{opacity:0;transform:translate(-50%,-50%) skewX(-18deg) scale(1.6);filter:brightness(2.5)}12%{opacity:1}28%{transform:translate(-50%,-50%) skewX(-8deg) scale(1.05)}65%{opacity:1;filter:brightness(1.2)}100%{opacity:0;transform:translate(-50%,-55%) skewX(-8deg) scale(.96);filter:brightness(1)}}
+.machine.impact-burst .reel-bezel{box-shadow:inset 0 0 0 3px #f4ffff,inset 0 0 35px #80f5ff88,0 0 25px #42eaff,0 0 65px #a85bff,0 0 105px #ff4ca833}.machine.impact-burst .art-panel{filter:brightness(1.35) saturate(1.35)}.machine.impact-burst .top-cap{box-shadow:inset 0 0 0 2px #fff,inset 0 0 35px #5beeffa8,0 0 28px #d14fff88}
+.machine.impact-burst .optic{filter:brightness(2.2);box-shadow:0 0 14px #fff,0 0 25px var(--cyan)}
+.machine.blackout .cabinet-shell:before,.machine.blackout .cabinet-shell:after{opacity:.12}.machine.blackout .cap-title,.machine.blackout .art-copy,.machine.blackout .optic{filter:brightness(.22)}
+.side-console{position:relative;border:1px solid #3c4d60;border-radius:12px;background:linear-gradient(145deg,#1a2431,#0c121d 40%,#121a27);padding:18px;box-shadow:inset 0 0 0 1px #a5c6df12,0 14px 45px #0003;overflow:hidden}
+.side-console:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent);box-shadow:0 0 14px #33dfff88}
+.console-kicker{font:800 9px/1.2 ui-monospace,monospace;letter-spacing:.22em;color:#81eaff;margin:0 0 8px}.console-title{font-size:21px;line-height:1.1;letter-spacing:.04em;margin:0 0 7px;font-weight:900}.console-desc{font-size:11px;line-height:1.8;color:#93a7bb;margin:0 0 18px}
+.control-group{border-top:1px solid #344253;padding:15px 0}.control-group:first-of-type{border-top:0;padding-top:0}.group-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.group-title{font-size:11px;font-weight:850;letter-spacing:.08em;color:#e0effb}.value-readout{font:900 11px/1 ui-monospace,monospace;color:var(--cyan);background:#142a39;border:1px solid #27617b;border-radius:4px;padding:5px 7px;min-width:38px;text-align:center}
+.range-wrap{display:grid;grid-template-columns:1fr 41px;gap:12px;align-items:center}.range-wrap input{width:100%;accent-color:#5beaff;cursor:pointer}.range-limits{display:flex;justify-content:space-between;margin-top:5px;color:#71879b;font:700 8px/1 ui-monospace,monospace}
+.segmented{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.seg{border:1px solid #41566a;border-radius:5px;padding:9px 5px;background:linear-gradient(#202d3b,#111925);color:#9eb4c7;font-size:10px;font-weight:800;transition:.15s}.seg[aria-pressed="true"]{color:#e9ffff;border-color:#66efff;background:linear-gradient(#22516a,#142839);box-shadow:inset 0 0 0 1px #7df7ff25,0 0 12px #38cfff20}
+.primary-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 10px}.action{position:relative;border:1px solid #648092;border-radius:6px;padding:12px 8px;background:linear-gradient(180deg,#344a5c,#152432 60%,#0c121b);color:#eafaff;font-size:11px;font-weight:900;letter-spacing:.06em;box-shadow:inset 0 1px #fff2,0 3px 0 #05080e;transition:transform .12s,filter .12s}.action:hover{filter:brightness(1.2)}.action:active{transform:translateY(2px);box-shadow:inset 0 1px #fff2,0 1px 0 #05080e}.action.primary{border-color:#3bbbd6;background:linear-gradient(180deg,#1685a0,#0d3d55 58%,#092130);box-shadow:inset 0 1px #d5ffff55,0 3px 0 #04080c,0 0 14px #27cfff25}.action.hot{border-color:#b84b62;background:linear-gradient(180deg,#8c293e,#431624 68%,#1b0a10)}
+.action-wide{width:100%;margin-top:1px}.mini-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.mini-action{border:1px solid #354b5d;background:#101a26;color:#8fa8ba;border-radius:5px;padding:8px 5px;font-size:9px;font-weight:800}.mini-action[aria-pressed="true"]{color:#cefcff;border-color:#4f9fb0;background:#173341}
+.console-readout{margin-top:16px;padding:12px;border:1px solid #324658;border-radius:6px;background:#080f18;box-shadow:inset 0 0 16px #0007}.readout-head{display:flex;align-items:center;justify-content:space-between;color:#7892a9;font:800 8px/1.2 ui-monospace,monospace;letter-spacing:.15em;margin-bottom:7px}.readout-lamp{color:#9fff8c}.readout-main{font:800 11px/1.5 ui-monospace,monospace;color:#b8e9ff;min-height:34px}.readout-bottom{display:flex;justify-content:space-between;gap:5px;margin-top:8px;padding-top:7px;border-top:1px solid #243545;color:#668096;font:700 8px/1 ui-monospace,monospace}
+.spec-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px}.spec{padding:8px 5px;border:1px solid #2a3e51;border-radius:5px;text-align:center;background:#0d1621}.spec b{display:block;font:900 12px/1.2 ui-monospace,monospace;color:#e6fbff}.spec span{display:block;margin-top:4px;font:700 7px/1.1 ui-monospace,monospace;color:#718ca2;letter-spacing:.08em}
+.footer{max-width:1600px;margin:20px auto 0;padding-top:12px;border-top:1px solid #263546;display:flex;justify-content:space-between;gap:12px;color:#63788c;font:700 8px/1.5 ui-monospace,monospace;letter-spacing:.08em}.footer span:last-child{text-align:right}
+.toast{position:fixed;z-index:99;left:50%;bottom:22px;transform:translate(-50%,20px);padding:11px 16px;border:1px solid #5cdcf4;border-radius:6px;background:#0d202d;color:#e9fbff;font-size:11px;font-weight:800;box-shadow:0 6px 35px #0009,0 0 18px #37dfff22;opacity:0;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:850px){.layout{grid-template-columns:1fr;max-width:100%}.machine-stage{order:0;justify-content:flex-start;overflow-x:auto}.side-console{order:1}.topbar{max-width:100%}.side-console{padding:16px}.console-intro{display:grid;grid-template-columns:1fr auto;column-gap:16px}.console-kicker,.console-title,.console-desc{grid-column:1}.console-desc{margin-bottom:0}.console-intro:after{content:"VISUAL DEMO";grid-column:2;grid-row:1/4;align-self:center;writing-mode:vertical-rl;color:#4c7187;font:900 9px/1 ui-monospace,monospace;letter-spacing:.2em}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.settings-grid .control-group{min-width:0}.primary-actions{margin-top:8px}}
+@media(max-width:480px){.page{padding:12px 7px 24px}.topbar{margin-bottom:14px;padding:0 5px}.brand-mark{width:30px;height:30px}.brand-name{font-size:11px}.brand-sub{font-size:7px}.top-status{font-size:8px}.layout{gap:12px}.machine{width:var(--cabinet-w);max-width:none}.cabinet-shell{padding:7px 7px 9px;border-radius:14px 14px 9px 9px}.top-cap{margin:0 5px 7px;min-height:80px;height:83px;padding:6px}.cap-title{font-size:clamp(20px,6.5vw,31px)}.cap-eyebrow{font-size:7px;letter-spacing:.28em;margin-top:6px}.cap-tagline{font-size:7px;letter-spacing:.12em}.optic-row{margin:0 5px 6px;height:20px}.optic{width:15px;height:15px}.optic-label{font-size:6px}.reel-bezel{padding:8px 6px}.reel-head{font-size:6px;letter-spacing:.07em;margin-bottom:6px}.reel-window{padding:3px;gap:2px;height:clamp(170px,calc(var(--rows) * 34px),360px)}.symbol-glyph{font-size:clamp(12px,4.4vw,22px)}.symbol-label{font-size:clamp(4px,1.3vw,6px);letter-spacing:0}.lane-index{font-size:6px;top:2px}.control-deck{padding:8px 7px;margin:8px 1px}.dial{width:clamp(18px,5.7vw,28px);height:clamp(18px,5.7vw,28px)}.deck-label{font-size:6px}.art-panel{height:clamp(116px,34vw,160px)}.art-copy strong{font-size:clamp(16px,5vw,25px)}.lower-grille{height:34px}.side-console{padding:13px}.console-title{font-size:19px}.console-desc{font-size:10px}.footer{font-size:7px;margin-top:14px}.footer span:last-child{max-width:48%}}
+
+.roster-panel{margin:2px 0 12px;padding:13px;border:1px solid #34485a;border-radius:7px;background:linear-gradient(145deg,#111e2b,#080e17 74%,#101a28);box-shadow:inset 0 0 0 1px #c5f5ff0b}
+.roster-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.roster-head label{font-size:11px;font-weight:900;letter-spacing:.08em;color:#e6f7ff}.roster-head small{font:800 8px/1 ui-monospace,monospace;letter-spacing:.08em;color:#78dff5}
+#roster{display:block;width:100%;min-height:90px;resize:vertical;border:1px solid #3c5a70;border-radius:5px;padding:9px;background:#050b13;color:#d9f8ff;font:700 11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;box-shadow:inset 0 0 12px #0008}
+.roster-help{margin:6px 0 9px;color:#829caf;font-size:9px;line-height:1.5}.roster-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.roster-action,.result-action{border:1px solid #3d566a;border-radius:4px;background:linear-gradient(#243444,#101924);color:#b8d0e0;padding:7px 5px;font-size:9px;font-weight:850}.roster-action:hover,.result-action:hover{filter:brightness(1.25)}
+.roster-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:10px}.roster-stat{padding:7px 4px;text-align:center;border:1px solid #283d50;border-radius:4px;background:#0a121d}.roster-stat span{display:block;color:#708ba2;font:800 7px/1 ui-monospace,monospace;letter-spacing:.06em}.roster-stat b{display:block;margin-top:5px;color:#e4faff;font:900 14px/1 ui-monospace,monospace}
+.pin-toggle{display:flex;align-items:flex-start;gap:8px;margin-top:12px;color:#d6e8f4;font-size:10px;font-weight:800;line-height:1.5;cursor:pointer}.pin-toggle input{margin:2px 0 0;accent-color:#6cf7ff;flex:0 0 auto}.pin-help{margin:4px 0 0 23px;color:#7992a7;font-size:9px;line-height:1.5}.fixed-list{margin-top:7px;padding:7px;border:1px solid #283e51;border-radius:4px;background:#080f18;color:#9fdced;font:700 9px/1.5 ui-monospace,monospace;overflow-wrap:anywhere;min-height:31px}
+.seat-output-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.result-action{padding:9px 6px;font-size:10px}.result-action:disabled{opacity:.38;cursor:not-allowed;filter:none}.result-summary{margin-top:10px;padding:9px;border:1px solid #2e4659;border-radius:5px;background:#070e17;color:#8fb0c5;font:700 9px/1.5 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:165px;overflow:auto}.result-summary.ready{border-color:#4f7b87;color:#c9faff;box-shadow:inset 0 0 12px #44e5ff0b}
+@media print{body{background:#fff!important;color:#111!important}.ambient-grid,.topbar,.side-console,.footer,.toast,.impact-banner{display:none!important}.page{max-width:none;padding:0}.layout{display:block;max-width:none}.machine-stage{padding:0}.machine{width:100%!important;max-width:none!important;filter:none;transform:none}.machine .cabinet-shell{box-shadow:none}.machine .art-sweep,.machine .reel-sweep{display:none}.machine .symbol.assignment{print-color-adjust:exact;-webkit-print-color-adjust:exact}.reel-lane{break-inside:avoid}.machine .cabinet-shell{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* NOVA//REACTOR refinement: larger information density, high-speed continuous reel travel. */
+:root{--spin-duration:.22s;--assigned-font:14px;--seat-code-font:7px}
+.side-console{padding:14px}
+.console-title{font-size:23px;line-height:1.02;letter-spacing:.025em;margin-bottom:5px}
+.console-desc{font-size:12px;line-height:1.5;margin-bottom:12px}
+.control-group{padding:10px 0}
+.group-head{margin-bottom:7px}
+.group-title{font-size:12px}
+.range-wrap{gap:8px}
+.segmented{gap:4px}
+.seg{padding:8px 4px;font-size:10px}
+.roster-panel{padding:10px;margin-bottom:9px}
+.roster-head{margin-bottom:6px}
+.roster-head label{font-size:12px}
+#roster{min-height:74px;font-size:12px;line-height:1.42;padding:7px}
+.roster-help{font-size:10px;line-height:1.4;margin:5px 0 7px}
+.roster-action,.result-action{font-size:10px;padding:8px 5px}
+.roster-stats{margin-top:7px}
+.roster-stat{padding:6px 3px}
+.roster-stat span{font-size:8px}
+.roster-stat b{font-size:15px;margin-top:4px}
+.pin-toggle{font-size:11px;margin-top:9px}
+.pin-help{font-size:10px;line-height:1.4;margin-top:3px}
+.fixed-list{font-size:10px;padding:6px;min-height:28px}
+.primary-actions{margin:10px 0 8px;gap:7px}
+.action{font-size:12px;line-height:1.15;padding:11px 7px;letter-spacing:.025em}
+.result-summary{font-size:11px;line-height:1.45;padding:8px;margin-top:8px}
+.reel-head{font-size:9px;letter-spacing:.1em;margin-bottom:6px}
+.under-display{font-size:8px;margin-top:6px}
+.reel-window{grid-template-rows:minmax(0,1fr)}
+.reel-lane{display:block;height:100%;min-height:0;align-self:stretch;grid-template-rows:none;transform:none;}
+.reel-strip{position:absolute;z-index:1;left:0;right:0;top:0;height:200%;display:grid;grid-template-rows:repeat(10,minmax(0,1fr));gap:0;transform:translate3d(0,0,0);backface-visibility:hidden;}
+.symbol{height:100%;min-height:0;border-bottom:2px solid #354c5c}
+.symbol-glyph{font-size:clamp(12px,2.1vw,25px)}
+.symbol-label{font-size:clamp(6px,.72vw,9px);margin-top:1px}
+.symbol.assignment{padding:1px;gap:1px}
+.symbol.assignment .symbol-glyph{font-size:var(--assigned-font);line-height:.95;font-weight:1000;overflow-wrap:anywhere;word-break:break-word;letter-spacing:-.025em}
+.symbol.assignment .symbol-label{font-size:var(--seat-code-font);line-height:1.0;margin:0;font-weight:1000}
+.symbol.assignment.pinned-empty .symbol-glyph{font-size:clamp(8px,calc(var(--assigned-font) * .74),13px)}
+.symbol.ghost{pointer-events:none;user-select:none}
+.reel-lane.spinning .reel-strip{animation:reelStripTravel var(--spin-duration) linear infinite;will-change:transform}
+.reel-lane.spinning .symbol:not(.ghost){filter:blur(.3px) saturate(1.25)}
+.reel-lane.spinning .symbol-glyph{transform:scaleY(1.62) skewY(-8deg) scaleX(.94);filter:blur(.7px);text-shadow:0 -8px 5px #b7ffffb8,0 5px 4px #34dfffce,0 13px 12px #34dfff70,0 22px 19px #34dfff2b}
+.reel-lane.spinning .symbol-label{filter:blur(1px);opacity:.45}
+@keyframes reelStripTravel{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-50%,0)}}
+.reel-lane.spinning:after{inset:-14% -10%;background:repeating-linear-gradient(180deg,transparent 0 4px,#ecffff24 5px 6px,transparent 7px 11px),linear-gradient(180deg,transparent 0%,#bfffff20 13%,#fff9 38%,#58eaff78 50%,#fff8 61%,#7a5bff30 76%,transparent 100%);filter:blur(1.2px);animation:vectorSweep .105s linear infinite}
+.reel-lane.spinning:before{opacity:.82;background:linear-gradient(90deg,#000a,transparent 8%,#fff6 45%,transparent 78%,#000a),linear-gradient(180deg,transparent 12%,#d6ffff18 36%,#fff8 50%,#31dfff40 56%,transparent 88%)}
+.reel-lane.braking .reel-strip{filter:blur(.25px)}
+.reel-lane.braking.spinning:after{opacity:.42;filter:blur(2px)}
+.lane-stop{bottom:3px;box-shadow:0 0 7px #47faff55,inset 0 1px 1px #fff9}
+.dial{font-size:0;display:grid;place-items:center}
+.dial:after{content:attr(data-stop);display:block;color:#ffe8e9;text-shadow:0 1px 2px #510711;font:900 7px/1 ui-monospace,monospace;letter-spacing:-.04em}
+.dial:disabled{opacity:.45;filter:saturate(.5);cursor:not-allowed}
+.dial.active:after{color:#fff8cd;text-shadow:0 0 5px #fff}
+.impact-banner{padding:13px clamp(13px,2.5vw,30px) 14px;border-width:2px;box-shadow:0 0 0 3px #08111d,0 0 26px #7af7ff,0 0 60px #a44dff,0 0 105px #ff3d9a55,inset 0 0 25px #c9ffff85}
+.impact-title{font-size:clamp(25px,5vw,56px);letter-spacing:.04em;line-height:.98;text-shadow:0 3px #1474a0,0 6px #09162b,0 0 8px #fff,0 0 22px #5df4ff,4px 0 #ff3d9a,-3px 0 #3f8bff,0 0 44px #c9ffff}
+.impact-sub{font-size:clamp(9px,1.2vw,12px);letter-spacing:.1em;margin-top:7px}
+.machine.impact-burst .reel-side-led{filter:brightness(2.4);box-shadow:0 0 13px #fff,0 0 28px var(--cyan)}
+.action:disabled{opacity:.4;filter:saturate(.45);cursor:not-allowed}
+@media(max-width:480px){
+  .side-console{padding:11px}
+  .console-title{font-size:21px}
+  .console-desc{font-size:11px;line-height:1.45}
+  .control-group{padding:8px 0}
+  .symbol.assignment .symbol-glyph{font-size:var(--assigned-font)}
+  .impact-title{font-size:clamp(23px,6.6vw,35px)}
+  .impact-sub{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.reel-lane.spinning .reel-strip{animation-duration:.45s!important}.reel-lane.spinning:after{animation-duration:.3s!important}}
+
+
+/* High-energy refinements: local 30 Hz light pulses, readable numeric reels,
+   directional multi-sample trails, longer impact typography, and 4:3 cells. */
+@keyframes opticalFlash30{
+  0%,49.9%{opacity:.3;filter:brightness(1.15) saturate(1.1)}
+  50%,100%{opacity:1;filter:brightness(3.25) saturate(1.7)}
+}
+.machine.rotating .cap-rail,
+.machine.impact-burst .cap-rail{
+  animation:railSurge .32s ease-in-out infinite alternate,opticalFlash30 33.333ms steps(2,end) infinite;
+}
+.machine.rotating .optic,
+.machine.impact-burst .optic{
+  animation:opticSurge .42s steps(2,end) infinite,opticalFlash30 33.333ms steps(2,end) infinite;
+}
+.machine.rotating .reel-side-led,
+.machine.impact-burst .reel-side-led{
+  animation:opticalFlash30 33.333ms steps(2,end) infinite;
+}
+.machine.impact-burst .reel-bezel{
+  box-shadow:inset 0 0 0 3px #fff,inset 0 0 44px #80f5ffb0,0 0 33px #42eaff,0 0 80px #a85bff,0 0 130px #ff3d9a88;
+}
+.machine.impact-burst .cap-title,
+.machine.impact-burst .art-copy strong{
+  filter:brightness(1.35) drop-shadow(0 0 15px #fff) drop-shadow(0 0 24px var(--pink));
+}
+.symbol.rolling-number{
+  z-index:1;
+  color:#071c30;
+  background:linear-gradient(180deg,#f9ffff 0%,#c6eef4 13%,#ffffff 37%,#d8ecf7 65%,#7cb7ce 100%);
+  box-shadow:inset 0 0 0 1px #fff,inset 0 -7px 15px #137a9b40,0 0 8px #66efff2c;
+}
+.symbol.rolling-number .symbol-glyph{
+  position:relative;isolation:isolate;z-index:0;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:clamp(19px,3vw,38px);font-weight:1000;line-height:.88;letter-spacing:-.08em;
+  font-variant-numeric:tabular-nums;color:#062943;
+  transform:translateY(-1px) scaleY(1.08);
+  text-shadow:0 -23px 2px #5df4ff32,0 -16px 2px #42dfff72,0 -8px 1px #baffff,0 2px 0 #fff,0 10px 5px #20c9ff87,0 21px 9px #389eff60,0 32px 16px #ee4dff35;
+  filter:drop-shadow(0 0 4px #51e7ff9c);
+}
+.symbol.rolling-number .symbol-glyph::before,
+.symbol.rolling-number .symbol-glyph::after{
+  content:attr(data-motion);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font:inherit;letter-spacing:inherit;line-height:inherit;pointer-events:none;white-space:nowrap;
+}
+.symbol.rolling-number .symbol-glyph::before{
+  color:#34cfff;opacity:.58;transform:translateY(-34%) scaleY(1.95) scaleX(.98);
+  filter:blur(1px);text-shadow:0 -9px 4px #d8ffff,0 -18px 8px #36cfffcc,0 -29px 14px #36cfff66;
+  clip-path:inset(0 0 16% 0);
+}
+.symbol.rolling-number .symbol-glyph::after{
+  color:#e83fff;opacity:.42;transform:translateY(35%) scaleY(1.9) scaleX(1.02);
+  filter:blur(1.3px);text-shadow:0 9px 4px #e83fffaa,0 19px 9px #44eaff88,0 31px 15px #44eaff44;
+  clip-path:inset(8% 0 0 0);
+}
+.symbol.rolling-number .symbol-label{opacity:0;margin:0;height:0;overflow:hidden}
+.reel-lane.spinning .symbol.rolling-number{filter:blur(.9px) saturate(1.55) contrast(1.18)}
+.reel-lane.spinning .symbol.rolling-number .symbol-glyph{
+  transform:translateY(-2px) scaleY(1.24) skewY(-7deg);
+  filter:blur(.8px) drop-shadow(0 0 7px #dfffff);
+  text-shadow:0 -38px 2px #5df4ff14,0 -29px 2px #5df4ff35,0 -21px 3px #5df4ff70,0 -14px 2px #42dfffbc,0 -7px 1px #dfffff,0 2px 0 #fff,0 10px 4px #20c9ffbd,0 18px 7px #389effa0,0 28px 12px #ee4dff70,0 39px 19px #ee4dff34;
+}
+/* A stop produces several directional echoes rather than a uniform blur. */
+.reel-lane.braking .symbol.rolling-number .symbol-glyph{
+  transition:transform 165ms cubic-bezier(.12,.82,.16,1),text-shadow 165ms ease,filter 165ms ease;
+  transform:translateY(0) scaleY(1.35) skewY(0);
+  filter:blur(.15px) drop-shadow(0 0 8px #fff);
+}
+.impact-banner.show{
+  animation:impactBanner 2.4s cubic-bezier(.08,.84,.16,1) both;
+  padding-top:clamp(18px,2.5vw,25px);padding-bottom:clamp(18px,2.5vw,25px);
+  border-width:3px;
+  box-shadow:0 0 0 4px #08111d,0 0 35px #fff,0 0 70px #7af7ff,0 0 130px #a44dff,0 0 190px #ff3d9a77,inset 0 0 38px #c9ffffa6;
+}
+.impact-banner:after{
+  content:"";position:absolute;z-index:1;inset:-30% -100%;pointer-events:none;
+  background:linear-gradient(105deg,transparent 36%,#ffffff00 42%,#fff 47%,#5af4ffde 50%,#fff0 58%,transparent 64%),repeating-linear-gradient(105deg,transparent 0 21px,#8af6ff18 22px 24px,transparent 25px 42px);
+  mix-blend-mode:screen;transform:translateX(-35%);opacity:0;
+}
+.impact-banner.show:after{animation:impactRays 2.4s ease-out both}
+.impact-title,.impact-sub{position:relative;z-index:2}
+.impact-title{
+  font-size:clamp(30px,5.8vw,70px);letter-spacing:.055em;
+  text-shadow:0 3px #1474a0,0 7px #09162b,0 0 4px #fff,0 0 17px #fff,0 0 34px #5df4ff,6px 0 #ff3d9a,-5px 0 #3f8bff,0 0 65px #c9ffff;
+}
+.impact-sub{font-size:clamp(10px,1.45vw,15px);margin-top:11px;letter-spacing:.13em}
+@keyframes impactRays{
+  0%{opacity:0;transform:translateX(-40%) skewX(-20deg)}
+  12%{opacity:1}
+  35%{opacity:.75;transform:translateX(5%) skewX(-12deg)}
+  65%{opacity:.9;transform:translateX(35%) skewX(-5deg)}
+  100%{opacity:0;transform:translateX(65%) skewX(0)}
+}
+@keyframes impactBanner{
+  0%{opacity:0;transform:translate(-50%,-50%) skewX(-22deg) scale(1.9);filter:brightness(3.5)}
+  8%{opacity:1;transform:translate(-50%,-50%) skewX(-8deg) scale(1.04)}
+  18%{opacity:1;transform:translate(-50%,-50%) skewX(-3deg) scale(1.02);filter:brightness(1.9)}
+  32%{opacity:1;transform:translate(-50%,-50%) skewX(-3deg) scale(1);filter:brightness(1.25)}
+  76%{opacity:1;transform:translate(-50%,-50%) skewX(-3deg) scale(1)}
+  89%{opacity:.92;transform:translate(-50%,-53%) skewX(-4deg) scale(.99)}
+  100%{opacity:0;transform:translate(-50%,-57%) skewX(-6deg) scale(.95);filter:brightness(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  .machine.rotating .cap-rail,.machine.impact-burst .cap-rail,
+  .machine.rotating .optic,.machine.impact-burst .optic,
+  .machine.rotating .reel-side-led,.machine.impact-burst .reel-side-led{animation:none!important}
+}
+
+
+/* Per-lane confirmation text remains visible even when another lane is stopped. */
+.reel-lane.lock-reveal::after{
+  content:attr(data-lock-text);position:absolute;z-index:8;left:2px;right:2px;top:38%;bottom:auto;inset-inline:2px;
+  min-height:clamp(28px,3.2vw,48px);display:flex;align-items:center;justify-content:center;padding:4px 2px;
+  text-align:center;white-space:normal;overflow-wrap:anywhere;
+  color:#fff;font:1000 clamp(8px,1vw,15px)/1.05 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.025em;
+  background:linear-gradient(100deg,#120a24f5,#075b83f5 32%,#6c176ef7 68%,#180b22f5);
+  border:1px solid #f7ffff;box-shadow:0 0 0 2px #071321,0 0 12px #fff,0 0 24px #5df4ff,0 0 34px #ff3d9a,inset 0 0 12px #d9ffff88;
+  text-shadow:0 1px #11283b,0 0 4px #fff,0 0 12px #55eeff,2px 0 #ff3d9a,-2px 0 #3f8bff;
+  mix-blend-mode:normal;pointer-events:none;filter:none;
+  animation:laneLockReveal 2.4s cubic-bezier(.12,.78,.18,1) both;
+}
+@keyframes laneLockReveal{
+  0%{opacity:0;transform:translateY(12px) scale(.62);filter:brightness(3)}
+  8%{opacity:1;transform:translateY(-2px) scale(1.1);filter:brightness(2.2)}
+  18%{opacity:1;transform:translateY(0) scale(1.03);filter:brightness(1.5)}
+  30%,78%{opacity:1;transform:translateY(0) scale(1);filter:brightness(1.12)}
+  100%{opacity:0;transform:translateY(-7px) scale(.96);filter:brightness(1)}
+}
+
+
+/* Idle reels stay neutral until the spin command. Directional trails remain visible,
+   while a short, hard cabinet kick communicates every individual lane lock. */
+.symbol[data-kind="idle"]{
+  color:#b8d7e8;
+  background:linear-gradient(145deg,#d9e5ec 0%,#72899b 25%,#f7fdff 52%,#8198aa 100%);
+  box-shadow:inset 0 0 0 1px #fff8,inset 0 -5px 9px #173c5533;
+}
+.symbol[data-kind="idle"] .symbol-glyph{
+  font-size:clamp(22px,3.3vw,40px);font-weight:900;line-height:1;color:#526e81;
+  transform:none;filter:none;text-shadow:0 1px 0 #fff,0 2px 0 #314b5c;
+}
+.reel-lane.spinning .symbol.rolling-number .symbol-glyph::before{
+  opacity:.66;transform:translateY(-38%) scaleY(2.05) scaleX(.98);
+  filter:blur(1.1px);text-shadow:0 -8px 3px #e3ffff,0 -18px 7px #36cfffdd,0 -31px 15px #36cfff88;
+}
+.reel-lane.spinning .symbol.rolling-number .symbol-glyph::after{
+  opacity:.48;transform:translateY(39%) scaleY(2.0) scaleX(1.02);
+  filter:blur(1.4px);text-shadow:0 8px 3px #ffe4ff,0 18px 8px #e83fffbb,0 32px 15px #44eaff66;
+}
+@keyframes cabinetStopImpact{
+  0%{transform:rotateY(-1deg) translate3d(0,0,0)}
+  7%{transform:rotateY(-1deg) translate3d(-7px,1px,0) rotateZ(-.32deg)}
+  15%{transform:rotateY(-1deg) translate3d(8px,-1px,0) rotateZ(.38deg)}
+  24%{transform:rotateY(-1deg) translate3d(-5px,2px,0) rotateZ(-.24deg)}
+  34%{transform:rotateY(-1deg) translate3d(4px,-1px,0) rotateZ(.2deg)}
+  46%{transform:rotateY(-1deg) translate3d(-2.5px,1px,0) rotateZ(-.12deg)}
+  60%{transform:rotateY(-1deg) translate3d(1.5px,0,0)}
+  76%{transform:rotateY(-1deg) translate3d(-.7px,0,0)}
+  100%{transform:rotateY(-1deg) translate3d(0,0,0)}
+}
+.machine.stop-impact{animation:cabinetStopImpact 270ms steps(2,end) both;}
+.machine.stop-impact .cabinet-shell{
+  box-shadow:inset 0 0 0 2px #fff,inset 0 0 24px #8cf8ff55,0 0 18px #58eaff66;
+}
+
+</style>
+</head>
+<body>
+<div class="ambient-grid" aria-hidden="true"></div>
+<div class="page">
+  <header class="topbar">
+    <div class="brand-lockup"><div class="brand-mark" aria-hidden="true"></div><div><div class="brand-name">NOVA<span style="color:var(--cyan)">//</span>REACTOR</div><div class="brand-sub">CABINET VISUAL PROTOTYPE / NR-07</div></div></div>
+    <div class="top-status"><span class="status-led"></span><span>OPTICAL SYSTEM<br>VISUAL MODE / 07</span></div>
+  </header>
+  <main class="layout">
+    <section class="machine-stage" aria-label="スロット筐体のプレビュー">
+      <div class="machine" id="machine">
+        <div class="cabinet-shell">
+          <header class="top-cap">
+            <div class="cap-rail"></div><div class="cap-eyebrow">N O V A &nbsp; / &nbsp; REACTION DRIVE</div>
+            <h1 class="cap-title">NOVA <span>REACTOR</span></h1>
+            <div class="cap-tagline">IGNITE THE NEXT PHASE — OPTICAL SYSTEM 07</div>
+            <div class="cap-corners"><i class="microbar"></i><i class="microbar"></i></div>
+            <div class="bolt-row cap-bolts"><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i><i class="bolt"></i></div>
+          </header>
+          <div class="optic-row">
+            <div class="optic-cluster"><i class="optic"></i><i class="optic purple"></i><i class="optic"></i><span class="optic-label">ENERGY / 88.4</span></div>
+            <span class="optic-label">PHASE 07 — ACTIVE</span>
+            <div class="optic-cluster"><span class="optic-label">CORE</span><i class="optic red"></i><i class="optic"></i><i class="optic purple"></i></div>
+          </div>
+          <section class="reel-bezel" aria-label="リール表示部">
+            <div class="reel-head"><span>REACTOR ARRAY / <b id="laneCaption">06 LANES</b></span><span class="live" id="reelState">SYSTEM READY</span></div>
+            <div class="reel-window" id="reelWindow"><div class="reel-side-led left"></div><div class="reel-side-led right"></div><div class="win-line"></div><div class="reel-sweep"></div></div>
+            <div class="under-display"><span>NR—07 / OPTIC ENGINE</span><span class="ticker"><span id="tickerText">LIGHT SEQUENCE STANDBY • REACTIVE ARRAY ONLINE • NOVA SYSTEMS • </span></span><span id="rowCaption">06 × 05</span></div>
+          </section>
+          <div class="control-deck" aria-label="筐体操作部">
+            <div class="deck-label">INPUT<br>MODE / A</div>
+            <div class="deck-control" id="dialControls" aria-label="レーンごとの停止ボタン"></div>
+            <div class="deck-label">REACTOR<br>CONTROL</div>
+          </div>
+          <div class="deck-foot"><span>OPTICAL FEEDBACK / ON</span><span>CAUTION: HIGH LUMINANCE</span><span>NR-07</span></div>
+          <section class="art-panel" aria-label="下部グラフィックパネル">
+            <svg class="art-svg" viewBox="0 0 620 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="bgArt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#092c49"/><stop offset=".5" stop-color="#101332"/><stop offset="1" stop-color="#2d124a"/></linearGradient>
+                <linearGradient id="bladeA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4ffff"/><stop offset=".35" stop-color="#66dfff"/><stop offset="1" stop-color="#2368d1"/></linearGradient>
+                <linearGradient id="bladeB" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffedb0"/><stop offset=".4" stop-color="#ff6ea6"/><stop offset="1" stop-color="#7439e3"/></linearGradient>
+                <radialGradient id="core"><stop stop-color="#fff"/><stop offset=".1" stop-color="#baffff"/><stop offset=".28" stop-color="#4deaff"/><stop offset=".53" stop-color="#2278ff" stop-opacity=".8"/><stop offset="1" stop-color="#2d4fff" stop-opacity="0"/></radialGradient>
+                <filter id="blurGlow"><feGaussianBlur stdDeviation="7"/></filter>
+              </defs>
+              <rect width="620" height="200" fill="url(#bgArt)"/>
+              <g opacity=".32" stroke="#8fefff" stroke-width="1"><path d="M0 28L180 200M40 0L255 200M620 20L440 200M580 0L365 200M0 162L240 0M620 156L390 0"/><path d="M0 40H620M0 70H620M0 130H620M0 160H620" stroke-dasharray="3 8"/></g>
+              <ellipse cx="310" cy="86" rx="120" ry="90" fill="url(#core)" filter="url(#blurGlow)"/>
+              <g transform="translate(310 82)">
+                <circle r="75" fill="none" stroke="#72f8ff" stroke-width="2" opacity=".8"/><circle r="61" fill="none" stroke="#e4ffff" stroke-width="1" stroke-dasharray="4 7"/><circle r="48" fill="none" stroke="#9c6dff" stroke-width="4" stroke-dasharray="42 12 8 10"/>
+                <path d="M0 -70L17 -22L64 -31L28 4L54 49L8 28L-25 61L-23 14L-68 -5L-25 -23Z" fill="url(#bladeA)" stroke="#e4ffff" stroke-width="1.5"/>
+                <path d="M0 -46L10 -11L42 -4L12 12L18 42L-4 19L-31 33L-21 4L-42 -17L-12 -15Z" fill="url(#bladeB)" stroke="#ffeaff" stroke-width="1.4"/>
+                <circle r="14" fill="#efffff" stroke="#61f4ff" stroke-width="4"/><circle r="4" fill="#173863"/>
+              </g>
+              <g fill="none" stroke-width="3"><path d="M-10 145L95 49L158 71L217 18" stroke="#5defff"/><path d="M630 140L522 40L467 68L405 15" stroke="#b56bff"/><path d="M15 15L83 68L111 54" stroke="#ff69ab"/><path d="M604 16L548 77L519 61" stroke="#ffbe6e"/></g>
+              <g fill="url(#bladeA)" stroke="#d8ffff" stroke-width="1"><path d="M28 103L78 81L64 127Z"/><path d="M592 101L542 78L555 124Z"/><path d="M170 22L195 35L164 48Z"/><path d="M450 22L424 35L456 48Z"/></g>
+              <g fill="#fff" opacity=".85"><circle cx="83" cy="38" r="2"/><circle cx="111" cy="147" r="1.5"/><circle cx="524" cy="35" r="2"/><circle cx="497" cy="149" r="1.5"/><circle cx="221" cy="54" r="1.7"/><circle cx="400" cy="56" r="1.7"/></g>
+            </svg>
+            <div class="art-sweep"></div><div class="art-copy"><strong>Ignite the <span style="color:#9bfaff">unknown</span></strong><small>RESONANCE DRIVE / REACTOR IGNITION</small></div>
+          </section>
+          <div class="lower-grille"><div class="grille-mesh"></div><div class="grille-center"></div><div class="coin-slot"></div></div>
+          <div class="base-foot"></div>
+        </div>
+        <div class="impact-banner" id="impactBanner" aria-hidden="true"><span class="impact-title" id="impactTitle">配置確定</span><span class="impact-sub" id="impactSub">LANE 01 // LOCKED</span></div>
+      </div>
+    </section>
+    <aside class="side-console" aria-label="外観デモ設定">
+      <div class="console-intro"><p class="console-kicker">// VISUAL CONTROL DECK</p><h2 class="console-title">OPTIC SYSTEM<br>CONFIGURATION</h2><p class="console-desc">全レーンを回転させ、赤いレーン別ボタンで1本ずつ停止。停止時に席替え結果を確定します。重複排除・絶対空席・コピー・印刷に対応。</p></div>
+      <div class="settings-grid">
+        <section class="control-group">
+          <div class="group-head"><label class="group-title" for="laneRange">レーン数</label><output class="value-readout" id="laneValue">6</output></div>
+          <div class="range-wrap"><input id="laneRange" type="range" min="2" max="12" value="6" step="1"><span style="font-size:9px;color:#8ba1b6">LANES</span></div><div class="range-limits"><span>02 / MIN</span><span>12 / MAX</span></div>
+        </section>
+        <section class="control-group">
+          <div class="group-head"><label class="group-title" for="rowRange">1レーンの表示数</label><output class="value-readout" id="rowValue">5</output></div>
+          <div class="range-wrap"><input id="rowRange" type="range" min="2" max="12" value="5" step="1"><span style="font-size:9px;color:#8ba1b6">ROWS</span></div><div class="range-limits"><span>02 / MIN</span><span>12 / MAX</span></div>
+        </section>
+        <section class="control-group">
+          <div class="group-head"><span class="group-title">発光プリセット</span><span class="value-readout" id="lightLabel">PULSE</span></div>
+          <div class="segmented" role="group" aria-label="発光プリセット"><button class="seg" data-light="pulse" aria-pressed="true">PULSE</button><button class="seg" data-light="prism" aria-pressed="false">PRISM</button><button class="seg" data-light="flare" aria-pressed="false">OVERDRIVE</button></div>
+        </section>
+        <section class="control-group">
+          <div class="group-head"><span class="group-title">リール演出速度</span><span class="value-readout" id="speedLabel">×1.0</span></div>
+          <div class="range-wrap"><input id="speedRange" type="range" min="1" max="5" value="4" step="1"><span style="font-size:9px;color:#8ba1b6">SPD ×</span></div><div class="range-limits"><span>CALM</span><span>RAPID</span></div>
+        </section>
+      </div>
+      <section class="roster-panel" aria-label="席替え設定">
+        <div class="roster-head"><label for="roster">参加者リスト</label><small>ROSTER INPUT</small></div>
+        <textarea id="roster" spellcheck="false" aria-describedby="rosterHelp">1-28</textarea>
+        <p class="roster-help" id="rosterHelp">改行・カンマ区切りに対応。連番は「1-28」。同じ番号・名前は1件に統合。各レーン停止時に結果を固定します。</p>
+        <div class="roster-actions"><button type="button" class="roster-action" id="fillSequential">人数分オート入力</button><button type="button" class="roster-action" id="clearRoster">全消去</button></div>
+        <div class="roster-stats" aria-live="polite">
+          <div class="roster-stat"><span>総座席数</span><b id="statSeats">30</b></div>
+          <div class="roster-stat"><span>参加者</span><b id="statStudents">28</b></div>
+          <div class="roster-stat"><span>空席</span><b id="statEmpty">2</b></div>
+        </div>
+        <label class="pin-toggle"><input type="checkbox" id="pinMode"><span>絶対空席の位置を指定する</span></label>
+        <p class="pin-help">チェック後、リール上の空席にしたいセルをタップ。決定後もその位置は必ず空席になります。</p>
+        <div class="fixed-list" id="fixedList">絶対空席：なし</div>
+      </section>
+      <div class="primary-actions"><button id="spinBtn" class="action primary">▶ 配置セット・全レーン回転</button><button id="stopBtn" class="action hot" disabled>■ 次のレーンを停止</button></div>
+      <div class="seat-output-actions"><button id="copyBtn" class="result-action" disabled>結果をコピー</button><button id="printBtn" class="result-action" disabled>A4縦型PDFをダウンロード</button></div>
+      <div id="resultText" class="result-summary">未確定。参加者を確認して「配置セット・全レーン回転」を押してください。</div>
+      <button id="impactBtn" class="action action-wide">✦ オーバードライブ演出</button>
+      <div class="mini-actions"><button id="lineBtn" class="mini-action" aria-pressed="false">ライン光：OFF</button><button id="blackoutBtn" class="mini-action" aria-pressed="false">瞬間暗転：実行</button></div>
+      <div class="console-readout"><div class="readout-head"><span>LIVE FEEDBACK</span><span class="readout-lamp" id="readoutLamp">● NOMINAL</span></div><div class="readout-main" id="readout">Optical array initialized.<br>Awaiting visual command...</div><div class="readout-bottom"><span id="readoutLanes">ARRAY 06</span><span id="readoutRows">ROWS 05</span><span>DEMO ONLY</span></div></div>
+      <div class="spec-strip"><div class="spec"><b id="specTotal">30</b><span>VISIBLE CELLS</span></div><div class="spec"><b id="specLane">06</b><span>LANES</span></div><div class="spec"><b id="specRow">05</b><span>ROWS / LANE</span></div></div>
+    </aside>
+  </main>
+  <footer class="footer"><span>NOVA//REACTOR — FICTIONAL CABINET STUDY<br>ONE-FILE HTML / NO EXTERNAL ASSETS</span><span>VISUAL MOCKUP ONLY<br>NO GAME LOGIC / NO PAYOUT LOGIC</span></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{
+  'use strict';
+  const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+  const machine=$('#machine'), reelWindow=$('#reelWindow'), laneRange=$('#laneRange'), rowRange=$('#rowRange'), speedRange=$('#speedRange');
+  const rosterInput=$('#roster'), pinMode=$('#pinMode'), fixedList=$('#fixedList');
+  const symbols=[
+    {kind:'nova',glyph:'✦',label:'NOVA'}, {kind:'flare',glyph:'✹',label:'FLARE'},
+    {kind:'prism',glyph:'◈',label:'PRISM'}, {kind:'pulse',glyph:'ϟ',label:'PULSE'},
+    {kind:'crown',glyph:'♛',label:'CROWN'}, {kind:'void',glyph:'◉',label:'VOID'},
+    {kind:'comet',glyph:'✧',label:'COMET'}, {kind:'orbit',glyph:'◎',label:'ORBIT'},
+    {kind:'nova',glyph:'⬡',label:'N-CORE'}, {kind:'prism',glyph:'⟡',label:'SPECTRA'},
+    {kind:'pulse',glyph:'⌁',label:'WAVE'}, {kind:'flare',glyph:'✺',label:'IGNITE'}
+  ];
+  let laneCount=6,rowCount=5,speed=4,activeIntervals=new Map(),lightMode='pulse',linesOn=false;
+  let fixedEmpty=new Set(),pendingSeats=null,currentResult=null,lockedLanes=new Set(),spinValues=[];
+  let toastTimer=null,blackoutTimer=null,impactTimer=null,finalImpactTimer=null;
+  const stopTimers=new Map();
+  const pad=n=>String(n).padStart(2,'0');
+  const clampInt=(value,min,max,fallback)=>{const n=Number.parseInt(value,10);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback;};
+  const getRows=()=>clampInt(rowRange.value,2,12,5);
+  const getCols=()=>clampInt(laneRange.value,2,12,6);
+  const capacity=()=>getRows()*getCols();
+  function updateCabinetWidth(){
+    const compact=window.matchMedia('(max-width: 600px)').matches;
+    const width=compact?Math.max(310,170+laneCount*32):Math.max(460,180+laneCount*72);
+    const root=document.documentElement;
+    root.style.setProperty('--cabinet-w',`${Math.round(width)}px`);
+    // Seat cells use a 4:3 (width:height) ratio. Include the real inner
+    // paddings and inter-lane gaps so the ratio remains close across 2–12 lanes.
+    const gap=compact?2:Math.max(2,Math.min(5,window.innerWidth*.005));
+    const usable=width-(compact?38:56);
+    const cellWidth=Math.max(18,(usable-(laneCount-1)*gap)/laneCount);
+    const cellHeight=cellWidth*3/4;
+    const reelHeight=cellHeight*rowCount+14;
+    reelWindow.style.height=`${Math.round(reelHeight)}px`;
+    const font=Math.max(8,Math.min(compact?17:24,cellWidth*.49,cellHeight*.62));
+    const label=Math.max(5,Math.min(compact?7:8,cellWidth*.18,cellHeight*.24));
+    root.style.setProperty('--assigned-font',`${font.toFixed(1)}px`);
+    root.style.setProperty('--seat-code-font',`${label.toFixed(1)}px`);
+  }
+  function normalizeCellAspectRatio(){
+    // Correct against measured, transformed DOM geometry so each visible seat
+    // is 4:3 even with cabinet perspective and browser sub-pixel rounding.
+    const cell=reelWindow.querySelector('.reel-lane .symbol:not(.ghost)');
+    if(!cell||!rowCount)return;
+    for(let attempt=0;attempt<4;attempt++){
+      const rect=cell.getBoundingClientRect();
+      const delta=rect.width*.75-rect.height;
+      if(Math.abs(delta)<.12)break;
+      const current=parseFloat(reelWindow.style.height)||reelWindow.getBoundingClientRect().height;
+      reelWindow.style.height=`${Math.max(90,current+delta*rowCount)}px`;
+      void reelWindow.offsetHeight;
+    }
+  }
+  function applySpinSpeed(){
+    speed=Number(speedRange.value);
+    // Triple the original visual travel speed without reducing the browser to
+    // a per-frame DOM update loop.
+    const duration=Math.max(.13,.49-(speed-1)*.09)/3;
+    document.documentElement.style.setProperty('--spin-duration',`${duration.toFixed(3)}s`);
+    $('#speedLabel').textContent=`×${(speed/2).toFixed(1)} / 3× BOOST`;
+  }
+  const rowLabel=n=>{let out='';while(n>=0){out=String.fromCharCode(n%26+65)+out;n=Math.floor(n/26)-1;}return out;};
+  const seatCode=index=>`${rowLabel(Math.floor(index/laneCount))}${index%laneCount+1}`;
+  const normalizeValue=value=>{const s=String(value).trim();return /^\d+$/.test(s)?s.replace(/^0+(?=\d)/,''):s;};
+  const valueKey=value=>{const s=normalizeValue(value);return /^\d+$/.test(s)?`number:${s}`:`text:${s}`;};
+  function parseRoster(){
+    const raw=rosterInput.value.trim();if(!raw)return [];
+    const normalized=raw.replace(/[，、；;\r]/g,'\n').replace(/[〜～]/g,'-');
+    const items=normalized.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean),values=[];
+    for(const item of items){
+      for(const token of item.split(/\s+/).filter(Boolean)){
+        const range=token.match(/^(\d+)\s*-\s*(\d+)$/);
+        if(range){
+          const start=Number(range[1]),end=Number(range[2]);
+          if(start<1||end<1)throw new Error('連番は1以上で指定してください。');
+          if(Math.abs(end-start)>5000)throw new Error('連番が大きすぎます。範囲を分けて入力してください。');
+          const step=start<=end?1:-1;
+          for(let n=start;n!==end+step;n+=step)values.push(String(n));
+        }else values.push(normalizeValue(token));
+      }
+    }
+    const unique=new Map();
+    for(const value of values){const key=valueKey(value);if(!unique.has(key))unique.set(key,value);}
+    return [...unique.values()];
+  }
+  function getRosterSafely(){try{return{roster:parseRoster(),error:''};}catch(error){return{roster:[],error:error.message||'参加者の入力を確認してください。'};}}
+  function shuffle(array){for(let i=array.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[array[i],array[j]]=[array[j],array[i]];}return array;}
+  function randomSymbol(){return symbols[Math.floor(Math.random()*symbols.length)];}
+  function laneEl(index){return reelWindow.querySelector(`.reel-lane[data-lane="${index}"]`);}
+  function makeSymbol(sym,index){
+    const el=document.createElement('div');el.className='symbol';el.dataset.seatIndex=String(index);el.dataset.kind=sym.kind;
+    const glyph=document.createElement('div');glyph.className='symbol-glyph';glyph.textContent=sym.glyph;
+    const label=document.createElement('div');label.className='symbol-label';label.textContent=sym.label;
+    el.append(glyph,label);el._glyph=glyph;el._label=label;return el;
+  }
+  function setSymbol(cell,sym){
+    cell.classList.remove('assignment','occupied-seat','empty-seat','pinned-empty','rolling-number','idle-symbol');
+    cell.dataset.kind=sym.kind;
+    if(sym.kind==='idle')cell.classList.add('idle-symbol');
+    const glyph=cell._glyph||cell.querySelector('.symbol-glyph');
+    glyph.textContent=sym.glyph;
+    delete glyph.dataset.motion;
+    (cell._label||cell.querySelector('.symbol-label')).textContent=sym.label;
+    cell.removeAttribute('title');
+  }
+  function syncLaneGhosts(lane){
+    if(!lane||!lane._realCells||!lane._ghostCells)return;
+    lane._realCells.forEach((real,i)=>{
+      const ghost=lane._ghostCells[i];
+      ghost.className=`${real.className} ghost`;
+      ghost.dataset.kind=real.dataset.kind;
+      ghost._glyph.textContent=real._glyph.textContent;
+      if(real._glyph.dataset.motion)ghost._glyph.dataset.motion=real._glyph.dataset.motion;else delete ghost._glyph.dataset.motion;
+      ghost._label.textContent=real._label.textContent;
+      if(real.title)ghost.title=real.title;else ghost.removeAttribute('title');
+    });
+  }
+  function setAssignment(cell,index,value,type){
+    cell.classList.add('assignment');cell.classList.remove('occupied-seat','empty-seat','pinned-empty','rolling-number','idle-symbol');cell.classList.add(type);
+    cell.dataset.kind=type;
+    const glyph=cell.querySelector('.symbol-glyph'),label=cell.querySelector('.symbol-label');
+    delete glyph.dataset.motion;
+    if(type==='pinned-empty'){glyph.textContent='絶対空席';label.textContent=seatCode(index);cell.title=`${seatCode(index)}：絶対空席（固定）`;}
+    else if(type==='empty-seat'){glyph.textContent='空席';label.textContent=seatCode(index);cell.title=`${seatCode(index)}：空席`;}
+    else{glyph.textContent=String(value);label.textContent=seatCode(index);cell.title=`${seatCode(index)}：${String(value)}`;}
+  }
+  function renderCellPreview(cell,index){
+    if(fixedEmpty.has(index)){setAssignment(cell,index,null,'pinned-empty');return;}
+    setSymbol(cell,{kind:'idle',glyph:'—',label:''});
+  }
+  function renderLanePreview(index){
+    const lane=laneEl(index);if(!lane)return;
+    lane._realCells.forEach(cell=>renderCellPreview(cell,Number(cell.dataset.seatIndex)));
+    syncLaneGhosts(lane);
+  }
+  function renderLaneAssignment(index,seats){
+    const lane=laneEl(index);if(!lane)return;
+    lane._realCells.forEach(cell=>{
+      const pos=Number(cell.dataset.seatIndex),value=seats[pos];
+      if(fixedEmpty.has(pos))setAssignment(cell,pos,null,'pinned-empty');
+      else if(value===null)setAssignment(cell,pos,null,'empty-seat');
+      else setAssignment(cell,pos,value,'occupied-seat');
+    });
+    syncLaneGhosts(lane);syncPinCells();
+  }
+  function renderAllAssignments(seats){for(let lane=0;lane<laneCount;lane++)renderLaneAssignment(lane,seats);}
+  function syncPinCells(){
+    machine.classList.toggle('pin-mode',pinMode.checked);
+    reelWindow.querySelectorAll('.symbol:not(.ghost)').forEach(cell=>{
+      const index=Number(cell.dataset.seatIndex);cell.tabIndex=pinMode.checked?0:-1;
+      if(pinMode.checked){cell.setAttribute('role','button');cell.setAttribute('aria-label',`${seatCode(index)} ${fixedEmpty.has(index)?'絶対空席を解除':'絶対空席に指定'}`);}
+      else{cell.removeAttribute('role');cell.removeAttribute('aria-label');}
+    });
+  }
+  function resetIntervals(){
+    for(const id of activeIntervals.values())clearInterval(id);activeIntervals.clear();
+    for(const id of stopTimers.values())clearTimeout(id);stopTimers.clear();
+    clearTimeout(finalImpactTimer);finalImpactTimer=null;
+    $('#impactBanner').classList.remove('show');machine.classList.remove('impact-burst','rotating');
+    $$('.reel-lane').forEach(l=>{
+      l.classList.remove('spinning','braking','impact-stop','lock-reveal');
+      if(l._lockRevealTimer){clearTimeout(l._lockRevealTimer);l._lockRevealTimer=null;}
+      delete l.dataset.lockText;
+      const strip=l.querySelector('.reel-strip');
+      if(strip){strip.style.animation='';strip.style.transform='';strip.style.transition='';}
+    });
+    $('#stopBtn').disabled=true;
+  }
+  function clearDrawState(){
+    resetIntervals();pendingSeats=null;currentResult=null;lockedLanes.clear();
+    $$('.reel-lane').forEach(l=>{l.classList.remove('stopped');renderLanePreview(Number(l.dataset.lane));});
+    $('#copyBtn').disabled=true;$('#printBtn').disabled=true;
+    $('#resultText').textContent='未確定。参加者を確認して「配置セット・全レーン回転」を押してください。';$('#resultText').classList.remove('ready');
+    setState('SYSTEM READY','Ready for seat assignment.','NOMINAL');syncPinCells();
+  }
+  function sayInputError(message){setState('INPUT ERROR',message,'CHECK INPUT');showToast(message);}
+  function setState(state,message,lamp='NOMINAL'){$('#reelState').textContent=state;$('#readout').textContent=message;$('#readoutLamp').textContent='● '+lamp;}
+  function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2100);}
+  let stopImpactTimer=null;
+  function triggerStopImpact(){
+    machine.classList.remove('stop-impact');
+    void machine.offsetWidth;
+    machine.classList.add('stop-impact');
+    clearTimeout(stopImpactTimer);
+    stopImpactTimer=setTimeout(()=>machine.classList.remove('stop-impact'),300);
+  }
+  function showImpact(laneIndex,all=false){
+    const banner=$('#impactBanner');
+    $('#impactTitle').textContent=all?'全席、完全確定!!':`第${pad(laneIndex+1)}レーン、確定!!`;
+    $('#impactSub').textContent=all?'NOVA//FINAL LOCK — 重複検査 OK':`LANE ${pad(laneIndex+1)} / HARD LOCK — 配置固定`;
+    banner.classList.remove('show');machine.classList.remove('impact-burst');
+    void banner.offsetWidth;banner.classList.add('show');machine.classList.add('impact-burst');
+    clearTimeout(impactTimer);impactTimer=setTimeout(()=>machine.classList.remove('impact-burst'),2520);
+  }
+  function updateSettingsStats(){
+    const cap=capacity(),result=getRosterSafely(),roster=result.roster,error=result.error;
+    const emptyCount=Math.max(0,cap-roster.length);
+    $('#statSeats').textContent=String(cap);$('#statStudents').textContent=error?'—':String(roster.length);$('#statEmpty').textContent=error?'—':String(emptyCount);
+    fixedEmpty=new Set([...fixedEmpty].filter(i=>i>=0&&i<cap));
+    fixedList.textContent=fixedEmpty.size?`絶対空席：${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join('・')}`:'絶対空席：なし';
+    syncPinCells();
+    if(error)sayInputError(error);
+    else if(roster.length>cap)sayInputError(`参加者が座席数を超えています（最大 ${cap} 人）。`);
+    else if(fixedEmpty.size>emptyCount)sayInputError(`絶対空席が多すぎます（最大 ${emptyCount} 席）。`);
+  }
+  function buildLanes(){
+    resetIntervals();pendingSeats=null;currentResult=null;lockedLanes.clear();
+    laneCount=Number(laneRange.value);rowCount=Number(rowRange.value);speed=Number(speedRange.value);
+    document.documentElement.style.setProperty('--lanes',laneCount);updateCabinetWidth();
+    reelWindow.style.setProperty('--lanes',laneCount);reelWindow.style.setProperty('--rows',rowCount);
+    reelWindow.querySelectorAll('.reel-lane').forEach(el=>el.remove());
+    fixedEmpty=new Set([...fixedEmpty].filter(i=>i>=0&&i<laneCount*rowCount));
+    const controls=$('#dialControls');controls.replaceChildren();
+    for(let i=0;i<laneCount;i++){
+      const lane=document.createElement('div');lane.className='reel-lane';lane.dataset.lane=String(i);
+      const badge=document.createElement('div');badge.className='lane-index';
+      const badgeN=document.createElement('span');badgeN.textContent=pad(i+1);
+      const badgeCode=document.createElement('span');badgeCode.textContent='NR';badge.append(badgeN,badgeCode);
+      const strip=document.createElement('div');strip.className='reel-strip';strip.style.gridTemplateRows=`repeat(${rowCount*2},minmax(0,1fr))`;
+      const realCells=[],ghostCells=[];
+      for(let r=0;r<rowCount;r++){const pos=r*laneCount+i;const cell=makeSymbol({kind:'idle',glyph:'—',label:''},pos);realCells.push(cell);strip.appendChild(cell);}
+      for(let r=0;r<rowCount;r++){const source=realCells[r];const ghost=makeSymbol({kind:source.dataset.kind,glyph:source._glyph.textContent,label:source._label.textContent},-1);ghost.classList.add('ghost');ghost.setAttribute('aria-hidden','true');ghost.tabIndex=-1;ghostCells.push(ghost);strip.appendChild(ghost);}
+      lane._realCells=realCells;lane._ghostCells=ghostCells;
+      const stopMark=document.createElement('div');stopMark.className='lane-stop';lane.append(badge,strip,stopMark);reelWindow.appendChild(lane);
+      const btn=document.createElement('button');btn.type='button';btn.className='dial';btn.dataset.stop=String(i);btn.setAttribute('aria-label',`レーン${i+1}を停止`);btn.title=`レーン ${i+1} を停止`;
+      btn.addEventListener('click',()=>onDialClick(i));controls.appendChild(btn);
+    }
+    $('#laneValue').textContent=String(laneCount);$('#rowValue').textContent=String(rowCount);
+    $('#laneCaption').textContent=`${pad(laneCount)} LANES`;$('#rowCaption').textContent=`${pad(laneCount)} × ${pad(rowCount)}`;
+    $('#readoutLanes').textContent=`ARRAY ${pad(laneCount)}`;$('#readoutRows').textContent=`ROWS ${pad(rowCount)}`;
+    $('#specTotal').textContent=pad(laneCount*rowCount);$('#specLane').textContent=pad(laneCount);$('#specRow').textContent=pad(rowCount);
+    applySpinSpeed();
+    $('#resultText').textContent='未確定。全レーンを回転させ、レーン別ボタンで1本ずつ停止してください。';$('#resultText').classList.remove('ready');$('#copyBtn').disabled=true;$('#printBtn').disabled=true;$('#stopBtn').disabled=true;
+    for(let i=0;i<laneCount;i++)renderLanePreview(i);
+    normalizeCellAspectRatio();
+    updateSettingsStats();syncPinCells();setState('SYSTEM READY',`Array ready: ${laneCount} lanes × ${rowCount} seats.`, 'NOMINAL');
+  }
+  function refreshPreviewAfterEdit(){clearDrawState();updateSettingsStats();}
+  function toggleFixed(index){
+    if(activeIntervals.size||pendingSeats!==null){sayInputError('回転中は絶対空席を変更できません。全レーン停止後に変更してください。');return;}
+    const {roster,error}=getRosterSafely();if(error){sayInputError(error);return;}
+    const emptyCount=capacity()-roster.length;
+    if(emptyCount<0){sayInputError(`参加者が座席数を超えています（最大 ${capacity()} 人）。`);return;}
+    if(fixedEmpty.has(index))fixedEmpty.delete(index);
+    else{if(fixedEmpty.size>=emptyCount){sayInputError(`絶対空席は最大 ${emptyCount} 席まで指定できます。`);return;}fixedEmpty.add(index);}
+    clearDrawState();updateSettingsStats();
+    setState('EMPTY POSITION SET',fixedEmpty.size?`Absolute empty positions: ${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join(', ')}`:'No absolute empty positions selected.','PIN MODE');
+  }
+  function prepareSeats(){
+    const {roster,error}=getRosterSafely();if(error)throw new Error(error);
+    const cap=capacity(),emptyCount=cap-roster.length;
+    if(emptyCount<0)throw new Error(`参加者が座席数を超えています（最大 ${cap} 人）。`);
+    if(fixedEmpty.size>emptyCount)throw new Error(`絶対空席が多すぎます（最大 ${emptyCount} 席）。`);
+    if(roster.length===0)throw new Error('参加者を入力してください。');
+    const tokens=roster.map(value=>({value,key:valueKey(value)}));
+    for(let i=0;i<emptyCount-fixedEmpty.size;i++)tokens.push({value:null,key:`empty:${i}`});
+    const positions=Array.from({length:cap},(_,i)=>i).filter(i=>!fixedEmpty.has(i));
+    if(tokens.length!==positions.length)throw new Error('内部の座席数が一致しません。設定を確認してください。');
+    shuffle(tokens);const seats=Array(cap).fill(null),seen=new Set();
+    positions.forEach((position,i)=>{const token=tokens[i];if(token.value!==null){if(seen.has(token.key))throw new Error('重複した参加者を検出したため、結果を確定できませんでした。');seen.add(token.key);}seats[position]=token.value;});
+    for(let i=0;i<seats.length;i++)if(fixedEmpty.has(i)&&seats[i]!==null)throw new Error('絶対空席の位置が変更されたため、結果を確定できませんでした。');
+    const finalSeen=new Set();for(const value of seats){if(value===null)continue;const key=valueKey(value);if(finalSeen.has(key))throw new Error('最終結果に重複があるため、結果を確定できませんでした。');finalSeen.add(key);}
+    return seats;
+  }
+  function scheduleLane(index){
+    const lane=laneEl(index);if(!lane||activeIntervals.has(index)||stopTimers.has(index))return;
+    lane.classList.remove('stopped','braking');lane.classList.add('spinning');
+    const work=laneCount*rowCount;
+    const ms=Math.max(9,Math.round((62-speed*7+(work>100?5:0))/3));
+    const id=setInterval(()=>cycleLane(index),ms);activeIntervals.set(index,id);machine.classList.add('rotating');
+    $('#stopBtn').disabled=false;
+  }
+  function setSpinNumber(cell){
+    cell.classList.remove('assignment','occupied-seat','empty-seat','pinned-empty','idle-symbol');
+    cell.classList.add('rolling-number');
+    cell.dataset.kind='number';
+    const value=spinValues.length?normalizeValue(spinValues[Math.floor(Math.random()*spinValues.length)]):'—';
+    const glyph=cell._glyph||cell.querySelector('.symbol-glyph');
+    const label=cell._label||cell.querySelector('.symbol-label');
+    glyph.textContent=value;
+    glyph.dataset.motion=value;
+    label.textContent='';
+    cell.removeAttribute('title');
+  }
+  function cycleLane(index){
+    const lane=laneEl(index);if(!lane||!lane._realCells)return;
+    lane._realCells.forEach(cell=>setSpinNumber(cell));
+    syncLaneGhosts(lane);
+  }
+  function startSeatDraw(){
+    if(pendingSeats!==null){showToast('配置演出は進行中です。レーンごとに停止してください。');return;}
+    if(stopTimers.size){showToast('レーンの減速処理が終わってから開始してください。');return;}
+    let seats;try{seats=prepareSeats();}catch(error){sayInputError(error.message||'設定を確認してください。');return;}
+    const rosterForSpin=getRosterSafely().roster.map(normalizeValue).filter(value=>value!=='');
+    const numericRoster=rosterForSpin.filter(value=>/^\d+$/.test(value));
+    spinValues=numericRoster.length?numericRoster:rosterForSpin;
+    clearDrawState();pendingSeats=seats;lockedLanes.clear();
+    for(let i=0;i<laneCount;i++)scheduleLane(i);
+    $('#stopBtn').disabled=false;
+    setState('ARRAY IGNITION',`${laneCount} lanes at high speed. Stop one lane per button press.`,'RUNNING');
+    showToast('NOVA//REACTOR — ARRAY IGNITION');
+  }
+  function finishIfComplete(){
+    if(pendingSeats===null||lockedLanes.size<laneCount||stopTimers.size>0)return;
+    const seats=pendingSeats.slice(),seen=new Set();
+    for(let i=0;i<seats.length;i++){
+      if(fixedEmpty.has(i)&&seats[i]!==null){sayInputError('絶対空席の位置が変更されたため、結果を確定できませんでした。');return;}
+      if(seats[i]!==null){const key=valueKey(seats[i]);if(seen.has(key)){sayInputError('最終結果に重複があるため、結果を確定できませんでした。');return;}seen.add(key);}
+    }
+    currentResult={rows:rowCount,cols:laneCount,seats,rosterCount:seen.size};pendingSeats=null;
+    renderAllAssignments(currentResult.seats);$('#copyBtn').disabled=false;$('#printBtn').disabled=false;
+    const empties=seats.filter(v=>v===null).length;
+    $('#resultText').textContent=`配置確定：${seen.size}人 / 空席 ${empties}席\n絶対空席：${[...fixedEmpty].sort((a,b)=>a-b).map(seatCode).join('・')||'なし'}`;
+    $('#resultText').classList.add('ready');setState('全レーン確定',`${seen.size}人の重複なし配置 / 空席 ${empties}席。絶対空席の位置を検査済み。`,'LOCKED');
+    $('#stopBtn').disabled=true;
+    clearTimeout(finalImpactTimer);
+    finalImpactTimer=setTimeout(()=>{if(currentResult){showImpact(null,true);showToast('全レーン配置確定 / 重複検査 OK');}},620);
+  }
+  function stopLane(index,announce=true){
+    const lane=laneEl(index);if(!lane)return;
+    if(stopTimers.size){showToast('停止演出中です。減速が完了してから次のレーンを止めてください。');return;}
+    const id=activeIntervals.get(index);if(!id||stopTimers.has(index))return;
+    clearInterval(id);activeIntervals.delete(index);
+    const strip=lane.querySelector('.reel-strip');
+    const computedTransform=getComputedStyle(strip).transform;
+    strip.style.animation='none';
+    strip.style.transform=computedTransform&&computedTransform!=='none'?computedTransform:'translate3d(0,0,0)';
+    strip.style.transition='transform 155ms cubic-bezier(.12,.82,.16,1)';
+    lane.classList.add('braking');
+    void strip.offsetWidth;
+    requestAnimationFrame(()=>{if(stopTimers.has(index))strip.style.transform='translate3d(0,0,0)';});
+    $('#stopBtn').disabled=activeIntervals.size===0;
+    const timer=setTimeout(()=>{
+      stopTimers.delete(index);
+      triggerStopImpact();
+      lane.classList.remove('spinning','braking');lane.classList.add('stopped');
+      strip.style.animation='';strip.style.transform='';strip.style.transition='';
+      const btn=$(`.dial[data-stop="${index}"]`);if(btn){btn.classList.add('active');setTimeout(()=>btn.classList.remove('active'),440);}
+      if(pendingSeats!==null){
+        lockedLanes.add(index);renderLaneAssignment(index,pendingSeats);
+        lane.classList.remove('impact-stop','lock-reveal');void lane.offsetWidth;lane.classList.add('impact-stop');setTimeout(()=>lane.classList.remove('impact-stop'),620);
+        lane.dataset.lockText=`第${pad(index+1)}レーン 確定!!`;
+        lane.classList.add('lock-reveal');
+        if(lane._lockRevealTimer)clearTimeout(lane._lockRevealTimer);
+        lane._lockRevealTimer=setTimeout(()=>{lane.classList.remove('lock-reveal');delete lane.dataset.lockText;lane._lockRevealTimer=null;},2450);
+        showImpact(index,false);
+      }else{
+        lane._realCells.forEach(cell=>{const pos=Number(cell.dataset.seatIndex);if(fixedEmpty.has(pos))setAssignment(cell,pos,null,'pinned-empty');else setSymbol(cell,randomSymbol());});syncLaneGhosts(lane);
+      }
+      if(activeIntervals.size===0&&stopTimers.size===0)machine.classList.remove('rotating');
+      $('#stopBtn').disabled=activeIntervals.size===0;
+      if(pendingSeats!==null){
+        const moving=activeIntervals.size,settling=stopTimers.size;
+        $('#reelState').textContent=moving?`ROTATING ${pad(moving)} / ${pad(laneCount)}`:settling?`BRAKING ${pad(settling)}`:'LANES LOCKED';
+        $('#readoutLamp').textContent='● '+(moving?'RUNNING':settling?'BRAKING':'LOCKING');
+        $('#readout').textContent=`第${pad(index+1)}レーンを確定。${lockedLanes.size}/${laneCount} レーン完了。`;
+        finishIfComplete();
+      }else{
+        $('#reelState').textContent=activeIntervals.size?`ROTATING ${pad(activeIntervals.size)} / ${pad(laneCount)}`:'SYSTEM READY';
+        $('#readoutLamp').textContent=activeIntervals.size?'● RUNNING':'● NOMINAL';
+        $('#readout').textContent=`第${pad(index+1)}レーン停止。`;
+        if(announce)showToast(`第${pad(index+1)}レーン / STOP`);
+      }
+    },165);
+    stopTimers.set(index,timer);
+    $('#stopBtn').disabled=true;
+  }
+  function stopNextLane(announce=true){
+    if(stopTimers.size){showToast('減速・確定演出中です。');return;}
+    const next=[...activeIntervals.keys()].sort((a,b)=>a-b)[0];
+    if(next!==undefined){stopLane(next,announce);return;}
+    if(stopTimers.size)showToast('減速・確定演出中です。');
+    else showToast('停止対象のレーンはありません。');
+  }
+  function onDialClick(index){
+    if(stopTimers.size){showToast('停止演出中です。次のレーンは減速後に停止できます。');return;}
+    if(pendingSeats===null){
+      showToast(currentResult?'再配置する場合は「配置セット・全レーン回転」を押してください。':'先に「配置セット・全レーン回転」を押してください。');
+      return;
+    }
+    if(activeIntervals.has(index)){stopLane(index,true);return;}
+    if(stopTimers.has(index)){showToast(`第${pad(index+1)}レーンは減速中です。`);return;}
+    showToast(`第${pad(index+1)}レーンは停止済みです。`);
+  }
+  function resultAsText(){
+    if(!currentResult)return '';
+    let text=`【座席決定結果】（${currentResult.rows}行 × ${currentResult.cols}列）\n教卓側 ↑\n\n`;
+    for(let r=0;r<currentResult.rows;r++){
+      const line=[];for(let c=0;c<currentResult.cols;c++){
+        const i=r*currentResult.cols+c;
+        const label=fixedEmpty.has(i)?'絶対空席':currentResult.seats[i]===null?'空席':currentResult.seats[i];
+        line.push(`${seatCode(i)}: ${label}`);
+      }
+      text+=line.join('\t')+'\n';
+    }
+    return text;
+  }
+  function wrapCanvasText(ctx,text,maxWidth,fontSize,maxLines=3){
+    const chars=Array.from(String(text));
+    ctx.font=`900 ${fontSize}px system-ui, -apple-system, "Segoe UI", sans-serif`;
+    const lines=[];let line='';
+    for(const ch of chars){
+      const test=line+ch;
+      if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=ch;}else line=test;
+    }
+    if(line||!lines.length)lines.push(line);
+    return lines.length<=maxLines?lines:null;
+  }
+  function concatBytes(parts){
+    const total=parts.reduce((n,p)=>n+p.length,0),out=new Uint8Array(total);let offset=0;
+    for(const part of parts){out.set(part,offset);offset+=part.length;}
+    return out;
+  }
+  function asciiBytes(value){return new TextEncoder().encode(value);}
+  function makeImagePdf(jpegBytes,imageWidth,imageHeight){
+    const pageWidth=595.28,pageHeight=841.89;
+    const content=asciiBytes(`q\n${pageWidth} 0 0 ${pageHeight} 0 0 cm\n/Im0 Do\nQ\n`);
+    const objects=[
+      asciiBytes('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n'),
+      asciiBytes('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n'),
+      asciiBytes(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`),
+      concatBytes([asciiBytes(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imageWidth} /Height ${imageHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`),jpegBytes,asciiBytes('\nendstream\nendobj\n')]),
+      concatBytes([asciiBytes(`5 0 obj\n<< /Length ${content.length} >>\nstream\n`),content,asciiBytes('endstream\nendobj\n')])
+    ];
+    const header=asciiBytes('%PDF-1.4\n% NOVA REACTOR\n'),parts=[header],offsets=[0];let offset=header.length;
+    objects.forEach((obj,i)=>{offsets[i+1]=offset;parts.push(obj);offset+=obj.length;});
+    const xrefOffset=offset;
+    let xref='xref\n0 6\n0000000000 65535 f \n';
+    for(let i=1;i<=5;i++)xref+=`${String(offsets[i]).padStart(10,'0')} 00000 n \n`;
+    xref+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
+    parts.push(asciiBytes(xref));return concatBytes(parts);
+  }
+  async function downloadResultPdf(){
+    if(!currentResult){showToast('先に座席を決定してください。');return;}
+    try{
+      // Browser canvas renders Japanese names using the device's fonts, then a
+      // single JPEG page is embedded into a valid, downloadable PDF.
+      const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{alpha:false});
+      if(!ctx)throw new Error('Canvas unavailable');
+      const W=1240,H=1754;canvas.width=W;canvas.height=H;
+      ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+      ctx.textBaseline='alphabetic';ctx.textAlign='left';
+      ctx.fillStyle='#101827';ctx.font='900 43px system-ui, -apple-system, "Segoe UI", sans-serif';ctx.fillText('席替え結果',64,82);
+      ctx.fillStyle='#5b6572';ctx.font='700 18px system-ui, -apple-system, "Segoe UI", sans-serif';
+      const total=currentResult.seats.length,occupied=currentResult.seats.filter(v=>v!==null).length,empties=total-occupied;
+      const date=new Date();const stamp=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+      ctx.fillText(`${currentResult.rows}行 × ${currentResult.cols}列　参加者 ${occupied}人　空席 ${empties}席　${stamp}`,66,132);
+      ctx.strokeStyle='#cbd2da';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(64,165);ctx.lineTo(W-64,165);ctx.stroke();
+      const marginX=64,areaTop=215,areaBottom=1610,areaHeight=areaBottom-areaTop;
+      const cellSize=Math.min((W-marginX*2)/currentResult.cols,areaHeight/currentResult.rows);
+      const gridW=cellSize*currentResult.cols,gridH=cellSize*currentResult.rows;
+      const gridX=(W-gridW)/2,gridY=areaTop+(areaHeight-gridH)/2;
+      ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle='#374151';ctx.font='800 18px system-ui, -apple-system, "Segoe UI", sans-serif';ctx.fillText('教卓側 ↑',W/2,gridY-17);
+      const padIn=Math.max(5,cellSize*.065);
+      for(let i=0;i<total;i++){
+        const r=Math.floor(i/currentResult.cols),c=i%currentResult.cols,x=gridX+c*cellSize,y=gridY+r*cellSize;
+        const fixed=fixedEmpty.has(i),value=currentResult.seats[i],empty=value===null;
+        ctx.fillStyle=fixed?'#fff7e8':empty?'#f2f5f7':'#ffffff';ctx.fillRect(x,y,cellSize,cellSize);
+        ctx.strokeStyle=fixed?'#c59a55':'#b8c2cc';ctx.lineWidth=Math.max(1,cellSize*.014);ctx.strokeRect(x,y,cellSize,cellSize);
+        const code=`${rowLabel(r)}${c+1}`;
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=fixed?'#94651e':'#6b7280';
+        ctx.font=`800 ${Math.max(9,Math.min(16,cellSize*.14))}px system-ui, -apple-system, "Segoe UI", sans-serif`;
+        ctx.fillText(code,x+padIn,y+padIn);
+        const label=fixed?'絶対空席':empty?'空席':String(value),maxWidth=cellSize-padIn*2;
+        let fontSize=Math.max(8,Math.min(35,cellSize*.29)),lines=null;
+        while(fontSize>=8){lines=wrapCanvasText(ctx,label,maxWidth,fontSize,3);if(lines)break;fontSize-=1;}
+        if(!lines){fontSize=8;lines=wrapCanvasText(ctx,label,maxWidth,fontSize,5)||[label];}
+        ctx.font=`900 ${fontSize}px system-ui, -apple-system, "Segoe UI", sans-serif`;
+        ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle=fixed?'#8b5d1e':empty?'#56616e':'#111827';
+        if(!empty&&!fixed&&/^\d+$/.test(label))ctx.fillStyle='#0e2438';
+        const lineHeight=fontSize*1.12,mainY=y+cellSize*.245;
+        lines.forEach((line,lineNo)=>ctx.fillText(line,x+cellSize/2,mainY+lineNo*lineHeight, maxWidth));
+      }
+      ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#7b8490';ctx.font='600 13px system-ui, -apple-system, "Segoe UI", sans-serif';
+      ctx.fillText('NOVA//REACTOR — 座席配置結果 / 絶対空席と重複を検査済み',64,1690);
+      const dataUrl=canvas.toDataURL('image/jpeg',.94),encoded=dataUrl.slice(dataUrl.indexOf(',')+1),binary=atob(encoded),jpeg=new Uint8Array(binary.length);
+      for(let i=0;i<binary.length;i++)jpeg[i]=binary.charCodeAt(i);
+      const pdf=makeImagePdf(jpeg,W,H),blob=new Blob([pdf],{type:'application/pdf'}),url=URL.createObjectURL(blob);
+      const a=document.createElement('a'),datePart=stamp.replaceAll('-','');a.href=url;a.download=`NOVA_REACTOR_seat_result_${datePart}.pdf`;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1500);showToast('縦型A4・座席マス正方形のPDFをダウンロードしました。');
+    }catch(error){console.error(error);showToast('PDFを生成できませんでした。ブラウザを確認してください。');}
+  }
+  laneRange.addEventListener('input',buildLanes);rowRange.addEventListener('input',buildLanes);
+  window.addEventListener('resize',()=>{updateCabinetWidth();normalizeCellAspectRatio();});
+  machine.addEventListener('transitionend',event=>{if(event.propertyName==='width')normalizeCellAspectRatio();});
+  rosterInput.addEventListener('input',refreshPreviewAfterEdit);
+  pinMode.addEventListener('change',()=>{syncPinCells();setState(pinMode.checked?'PIN MODE ACTIVE':'SYSTEM READY',pinMode.checked?'リール上のセルを選択して絶対空席に指定してください。':'Absolute empty selection mode disabled.',pinMode.checked?'PIN MODE':'NOMINAL');});
+  reelWindow.addEventListener('click',event=>{const cell=event.target.closest('.symbol:not(.ghost)');if(cell&&pinMode.checked)toggleFixed(Number(cell.dataset.seatIndex));});
+  reelWindow.addEventListener('keydown',event=>{const cell=event.target.closest('.symbol:not(.ghost)');if(cell&&pinMode.checked&&(event.key==='Enter'||event.key===' ')){event.preventDefault();toggleFixed(Number(cell.dataset.seatIndex));}});
+  $('#fillSequential').addEventListener('click',()=>{const count=Math.max(1,capacity()-fixedEmpty.size);rosterInput.value=`1-${count}`;refreshPreviewAfterEdit();});
+  $('#clearRoster').addEventListener('click',()=>{rosterInput.value='';refreshPreviewAfterEdit();});
+  $('#spinBtn').addEventListener('click',startSeatDraw);$('#stopBtn').addEventListener('click',()=>stopNextLane(true));$('#impactBtn').addEventListener('click',overdrive);
+  $('#copyBtn').addEventListener('click',async()=>{
+    const text=resultAsText();if(!text){showToast('先に座席を決定してください。');return;}
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(text);
+      else{const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const copied=document.execCommand('copy');area.remove();if(!copied)throw new Error('copy failed');}
+      showToast('座席結果をコピーしました。');
+    }catch{showToast('コピーできませんでした。ブラウザの権限を確認してください。');}
+  });
+  $('#printBtn').addEventListener('click',downloadResultPdf);
+  speedRange.addEventListener('input',()=>{
+    applySpinSpeed();
+    const moving=[...activeIntervals.keys()];
+    for(const i of moving){clearInterval(activeIntervals.get(i));activeIntervals.delete(i);scheduleLane(i);}
+  });
+  function setLight(mode,notify=true){
+    lightMode=mode;$$('[data-light]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.light===mode)));
+    $('#lightLabel').textContent=mode==='pulse'?'PULSE':mode==='prism'?'PRISM':'OVERDRIVE';
+    document.documentElement.style.setProperty('--glow',mode==='flare'?'2.8':mode==='prism'?'2':'1.35');
+    document.documentElement.style.setProperty('--cyan',mode==='prism'?'#b08cff':mode==='flare'?'#fff18a':'#6cf7ff');
+    document.documentElement.style.setProperty('--violet',mode==='pulse'?'#a85bff':mode==='prism'?'#ff4ca8':'#ff6e3a');
+    machine.classList.toggle('flare',mode==='flare');
+    if(mode==='prism')machine.style.filter='drop-shadow(0 28px 22px #0009) hue-rotate(24deg)';else machine.style.filter='drop-shadow(0 28px 22px #0009)';
+    if(notify)showToast(`${mode.toUpperCase()} LIGHTING ACTIVE`);
+  }
+  function overdrive(){
+    machine.classList.remove('blackout');machine.classList.add('flare');setLight('flare');machine.classList.add('show-line');$('#lineBtn').setAttribute('aria-pressed','true');$('#lineBtn').textContent='ライン光：ON';
+    setState('OVERDRIVE SEQUENCE','Prism rails synchronized. Core flare and scanline active.','OVERDRIVE');showToast('✦ OVERDRIVE / OPTICAL BURST');
+    setTimeout(()=>{machine.classList.remove('flare');if(lightMode!=='flare')setLight(lightMode);},1450);
+  }
+  $$('[data-light]').forEach(btn=>btn.addEventListener('click',()=>setLight(btn.dataset.light)));
+  $('#lineBtn').addEventListener('click',()=>{linesOn=!linesOn;machine.classList.toggle('show-line',linesOn);$('#lineBtn').setAttribute('aria-pressed',String(linesOn));$('#lineBtn').textContent=`ライン光：${linesOn?'ON':'OFF'}`;showToast(`SCAN LINE ${linesOn?'ENABLED':'DISABLED'}`);});
+  $('#blackoutBtn').addEventListener('click',()=>{machine.classList.add('blackout');setState('OPTICAL DROP','Brief illumination cut. Power rails recovering...','TRANSIENT');showToast('OPTICAL DROP / RECOVERY');clearTimeout(blackoutTimer);blackoutTimer=setTimeout(()=>{machine.classList.remove('blackout');setState('SYSTEM RECOVERED','Light rails synchronized. Visual array back online.','NOMINAL');},430);});
+  buildLanes();setLight('pulse',false);
+})();
+</script>
+</body>
+</html>
